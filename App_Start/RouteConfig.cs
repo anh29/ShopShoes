@@ -29,14 +29,26 @@ namespace ShopOnline
             );
             routes.MapRoute(
                 name: "CategoryProduct",
-                url: "danh-muc-san-pham/{alias}-{id}",
+                url: "danh-muc-san-pham/{alias}-p{id}",
                 defaults: new { controller = "Products", action = "ProductCategory", id = UrlParameter.Optional },
+                namespaces: new[] { "ShopOnline.Controllers" }
+            );
+            routes.MapRoute(
+                name: "DetailProduct",
+                url: "chi-tiet/{alias}-{id}",
+                defaults: new { controller = "Products", action = "Index", id = UrlParameter.Optional },
                 namespaces: new[] { "ShopOnline.Controllers" }
             );
             routes.MapRoute(
                 name: "Contact",
                 url: "lien-he",
                 defaults: new { controller = "Contact", action = "Index", alias = UrlParameter.Optional },
+                namespaces: new[] { "ShopOnline.Controllers" }
+            );
+            routes.MapRoute(
+                name: "ShoppingCart",
+                url: "gio-hang",
+                defaults: new { controller = "ShoppingCart", action = "Index", alias = UrlParameter.Optional },
                 namespaces: new[] { "ShopOnline.Controllers" }
             );
         }

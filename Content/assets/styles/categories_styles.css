@@ -1342,12 +1342,14 @@ section
 .product_image img
 {
 	width: 100%;
+	padding-top: 55px;
 }
-.product_info
-{
+.product_info {
 	text-align: center;
 	padding-left: 10px;
 	padding-right: 10px;
+	position: absolute;
+	bottom: 10px;
 }
 .product_name
 {

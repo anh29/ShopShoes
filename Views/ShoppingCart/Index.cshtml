@@ -1,0 +1,79 @@
+﻿@model IEnumerable<ShopOnline.Models.ShoppingCartItem> 
+@using ShopOnline.Common
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_responsive.css">
+
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col product_section clearfix">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active"><a href="/"><i class="fa fa-angle-right" aria-hidden="true"></i>Giỏ hàng</a></li>
+                </ul>
+            </div>
+
+            <!-- Main Content -->
+
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table">
+                        <tr class="text-center">
+                            <th>STT</th>
+                            <th>Ảnh sản phẩm</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Danh mục</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                            <th></th>
+                        </tr>
+                        @if (Model != null && Model.Any())
+                        {
+                            var i = 0;
+                            foreach (var item in Model)
+                            {
+                                <tr class="text-center" id="trow_@item.ProductId">
+                                    <td>@(i+1)</td>
+                                    <td><img src="@item.ProductImg" width="60" /></td>
+                                    <td>
+                                        <a href="/chi-tiet/@item.Alias-@(item.ProductId)">
+                                            @item.ProductName
+                                        </a>
+                                    </td>
+                                    <td>@item.CategoryName</td>
+                                    <td>@Common.FormatNumber(item.Price, 0)</td>
+                                    <td>@item.Quantity</td>
+                                    <td>@Common.FormatNumber(item.TotalPrice, 2)</td>
+                                    <td>
+                                        @* data-id: lưu trữ một giá trị định danh (ID) cho một phần tử HTML. -> JS để truy cập giá trị "data-id" *@
+                                        <a href="#" data-id="@item.ProductId" class="btn btn-sm btn-danger btnDelete">Xóa</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <th colspan="7">Không có sản phẩm trong giỏ hàng.</th>
+                            </tr>
+                        }
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/Content/assets/js/categories_custom.js"></script>
+}

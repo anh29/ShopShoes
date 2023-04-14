@@ -3,6 +3,7 @@
 
 @if (Model != null && Model.Any())
 {
+    var i = 0;
     <!-- Banner -->
 
     <div class="banner">
@@ -10,6 +11,9 @@
             <div class="row">
                 @foreach (var item in Model)
                 {
+                    i++;
+                    if (i <= 3)
+                    {
                     <div class="col-md-4">
                         <div class="banner_item align-items-center" style="background-image: url('@item.Icon')">
                             <div class="banner_category">
@@ -17,6 +21,7 @@
                             </div>
                         </div>
                     </div>
+                    }
                 }
                 @*<div class="col-md-4">
                     <div class="banner_item align-items-center" style="background-image: url('/Content/assets/images/banner_1.jpg')">
