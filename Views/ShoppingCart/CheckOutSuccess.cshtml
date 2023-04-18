@@ -1,9 +1,8 @@
-﻿@model IEnumerable<ShopOnline.Models.ShoppingCartItem> 
-@using ShopOnline.Common
-
+﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Đặt hàng thành công";
 }
+
 
 <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_styles.css">
 <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_responsive.css">
@@ -25,8 +24,8 @@
 
             <div class="row">
                 <div class="col-md-12" id="load_data">
-                    @Html.Action("Partial_Item_Cart", "ShoppingCart")
-                    </div>
+                    <h2>Bạn đã đặt mua thành công</h2>
+                </div>
             </div>
         </div>
     </div>

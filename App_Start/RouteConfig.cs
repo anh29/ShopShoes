@@ -51,6 +51,12 @@ namespace ShopOnline
                 defaults: new { controller = "ShoppingCart", action = "Index", alias = UrlParameter.Optional },
                 namespaces: new[] { "ShopOnline.Controllers" }
             );
+            routes.MapRoute(
+                name: "CheckOut",
+                url: "thanh-toan",
+                defaults: new { controller = "ShoppingCart", action = "CheckOut", alias = UrlParameter.Optional },
+                namespaces: new[] { "ShopOnline.Controllers" }
+            );
         }
     }
 }
