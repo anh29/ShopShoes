@@ -1,0 +1,29 @@
+﻿@model  IEnumerable<ShopLearning.Models.EF.OrderDetail>
+
+@if (Model != null && Model.Any())
+{
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                    <tr>
+                        <td></td>
+                        <td>@item.Product.Title</td>
+                        <td>@item.Price</td>
+                        <td>@item.Quantity</td>
+                        <td>@ShopLearning.Models.Common.Common.FormatNumber((item.Price * item.Quantity), 3)</td>
+
+                    </tr>
+                        }
+                    </tbody>
+                </table>
+}

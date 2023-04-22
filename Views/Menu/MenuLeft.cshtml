@@ -1,0 +1,18 @@
+﻿@model IEnumerable<ShopLearning.Models.EF.ProductCategory>
+@if(Model!=null && Model.Any())
+            {
+                <ul class="sidebar-categories">
+                    @foreach(var item in Model)
+                {
+                     <li class="active">
+                            <a href="danh-muc-san-pham/@item.Alias-@item.Id">
+                             <span>
+                                 <i class="fa fa-angle-double-right" aria-hidden="true" style="font-size: larger;">
+                                     @item.Title
+                                 </i>
+                             </span>
+                            </a>
+                     </li>
+                }
+                </ul>
+            }
