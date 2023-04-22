@@ -34,19 +34,15 @@ namespace ShopOnline.Controllers
             }
             return View();
         }
-        public ActionResult CheckOutSuccess()
-        {
-            return View();
-        }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CheckOut(OrderViewModel req)
+        public ActionResult CheckOutOrder(OrderViewModel req)
         {
             var code = new { Success = false, Code = -1 };
             if (ModelState.IsValid)
             {
                 ShoppingCart cart = (ShoppingCart)Session["Cart"];
-                if (cart != null)
+                if (cart != null && cart.Items.Any())
                 {
                     Order order = new Order();
                     order.CustomerName = req.CustomerName;
@@ -58,6 +54,7 @@ namespace ShopOnline.Controllers
                         Quantity = x.Quantity,
                         Price = x.Price
                     }));
+
                     order.TotalAmount = cart.Items.Sum(x => (x.Price * x.Quantity));
                     order.TypePayment = req.TypePayment;
                     order.CreatedDate = DateTime.Now;
@@ -67,13 +64,42 @@ namespace ShopOnline.Controllers
                     order.Code = "DH" + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9);
                     db.Orders.Add(order);
                     db.SaveChanges();
-                    cart.ClearCart();
-                    code = new { Success = true, Code = 1 };
-                    return RedirectToAction("Index");
 
+                    //send mail cho khách hàng
+                    var strSanPham = "";
+                    var TongTien = decimal.Zero;
+                    var ThanhTien = decimal.Zero;
+                    foreach (var sp in cart.Items)
+                    {
+                        strSanPham += "<tr>";
+                        strSanPham += "<td>" + sp.ProductName + "</td>";
+                        strSanPham += "<td>" + sp.Quantity + "</td>";
+                        strSanPham += "<td>" + ShopOnline.Common.Common.FormatNumber(sp.TotalPrice, 0) + "</td>";
+                        strSanPham += "</tr>";
+                        ThanhTien += sp.Price * sp.Quantity;
+                    }
+                    TongTien = ThanhTien;
+
+                    string contentCustomer = System.IO.File.ReadAllText(Server.MapPath("/Content/templates/send2.html"));
+                    contentCustomer = contentCustomer.Replace("{{MaDon}}", order.Code);
+                    contentCustomer = contentCustomer.Replace("{{SanPham}}", strSanPham);
+                    contentCustomer = contentCustomer.Replace("{{NgayDat}}", order.CreatedDate.ToString());
+                    contentCustomer = contentCustomer.Replace("{{TenKhachHang}}", order.CustomerName);
+                    contentCustomer = contentCustomer.Replace("{{Phone}}", order.Phone);
+                    contentCustomer = contentCustomer.Replace("{{Email}}", req.Email);
+                    contentCustomer = contentCustomer.Replace("{{DiaChiNhanHang}}", order.Address);
+                    contentCustomer = contentCustomer.Replace("{{ThanhTien}}", ShopOnline.Common.Common.FormatNumber(ThanhTien, 0));
+                    contentCustomer = contentCustomer.Replace("{{TongTien}}", ShopOnline.Common.Common.FormatNumber(TongTien, 0));
+                    ShopOnline.Common.Common.SendMail("Shop TwinkleToes", "Đơn hàng #" + order.Code, contentCustomer.ToString(), req.Email);
+                    cart.ClearCart();
+                    return RedirectToAction("CheckOutSuccess");
                 }
             }
             return Json(code);
+        }
+        public ActionResult CheckOutSuccess()
+        {
+            return View();
         }
         public ActionResult Partial_CheckOut()
         {
@@ -82,7 +108,7 @@ namespace ShopOnline.Controllers
         public ActionResult Partial_Item_Cart()
         {
             ShoppingCart cart = (ShoppingCart)Session["Cart"];
-            if (cart != null)
+            if (cart != null && cart.Items.Any())
             {
                 return View(cart.Items);
             }
@@ -91,7 +117,7 @@ namespace ShopOnline.Controllers
         public ActionResult Partial_Item_CheckOut()
         {
             ShoppingCart cart = (ShoppingCart)Session["Cart"];
-            if (cart != null)
+            if (cart != null && cart.Items.Any())
             {
                 return PartialView(cart.Items);
             }
@@ -100,7 +126,7 @@ namespace ShopOnline.Controllers
         public ActionResult ShowCount()
         {
             ShoppingCart cart = (ShoppingCart)Session["Cart"];
-            if (cart != null)
+            if (cart != null && cart.Items.Any())
             {
                 return Json(new { Count = cart.Items.Count }, JsonRequestBehavior.AllowGet);
             }
@@ -149,7 +175,7 @@ namespace ShopOnline.Controllers
         public ActionResult Update(int id, int quantity)
         {
             ShoppingCart cart = (ShoppingCart)Session["cart"];
-            if (cart != null)
+            if (cart != null && cart.Items.Any())
             {
                 cart.UpdateQuantity(id, quantity);
                 return Json(new {Success = true});
@@ -163,7 +189,7 @@ namespace ShopOnline.Controllers
             var code = new { Success = false, msg = "", code = -1, Count = 0 };
 
             ShoppingCart cart = (ShoppingCart)Session["cart"];
-            if (cart != null)
+            if (cart != null && cart.Items.Any())
             {
                 var checkProduct = cart.Items.FirstOrDefault(x => x.ProductId == id);
                 if (checkProduct != null)
@@ -179,7 +205,7 @@ namespace ShopOnline.Controllers
         public ActionResult DeleteAll()
         {
             ShoppingCart cart = (ShoppingCart)Session["Cart"];
-            if (cart != null)
+            if (cart != null && cart.Items.Any())
             {
                 cart.ClearCart();
                 return Json(new {Success = true});

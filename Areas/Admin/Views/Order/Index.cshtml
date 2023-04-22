@@ -1,4 +1,5 @@
-﻿@model PagedList.IPagedList<ShopOnline.Models.EF.Order>
+﻿@model PagedList.PagedList<ShopOnline.Models.EF.Order>
+@using PagedList.Mvc;
 @using PagedList;
 @{
     ViewBag.Title = "Danh sách đơn hàng";
@@ -33,7 +34,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>STT</th>
                         <th>Mã đơn hàng</th>
                         <th>Tên khách hàng</th>
                         <th>Phone</th>
@@ -46,7 +47,7 @@
                 <tbody>
                     @if (Model != null && Model.Any())
                     {
-                        var i = 0;
+                        var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
                         foreach (var item in Model)
                         {
                             <tr>
@@ -59,6 +60,8 @@
                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                                 <td>
                                     <a href="/admin/order/detail/@item.Id" class="btn btn-sm btn-success">Xem</a>
+                                    @*<a href="#" class="btn btn-sm btn-danger btnUpdate" data-id="@item.Id">Cập nhật</a>*@
+                                    <a href="#" class="btn btn-sm btn-danger btnUpdate" data-id="@item.Id" onclick="HandleClickUpdate('@item.Id')">Cập nhật</a>
                                 </td>
                             </tr>
                             i++;
@@ -66,10 +69,17 @@
                     }
                 </tbody>
             </table>
+
+            <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6" style="text-align: right;">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                </div>
+            </div>
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            
+
         </div>
         <!-- /.card-footer-->
     </div>
@@ -77,3 +87,60 @@
 
 </section>
 <!-- /.content -->
+
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Cập nhật trạng thái</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span> <!--ký tự nhân trong toán học.-->
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="txtOrderId" value="0" />
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <select class="form-control" id="ddStatus">
+                        <option value="2">Đã thanh toán</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary btnSave">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '.btnUpdate', function () {
+                var id = $(this).data("id");
+                $('#txtOrderId').val(id);
+                $('#modal-default').modal('show');
+            });
+            function HandleClickUpdate(id)
+            {
+                $('#txtOrderId').val(id);
+                $('#modal-default').modal('show');
+            };
+            $('body').on('click', '.btnSave', function () {
+                var id = $('#txtOrderId').val();
+                var status = $('#ddStatus').val();
+                $.ajax({
+                    url: '/admin/order/UpdateStatus',
+                    type: 'POST',
+                    data: { id: id, status: status },
+                    success: function (res) {
+                        if (res.Success) {
+                            location.reload();
+                        };
+                    }
+                });
+            });
+        });
+    </script>
+}

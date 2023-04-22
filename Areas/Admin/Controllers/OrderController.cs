@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 
 namespace ShopOnline.Areas.Admin.Controllers
 {
@@ -21,7 +22,9 @@ namespace ShopOnline.Areas.Admin.Controllers
                 page = 1;
             }
             var pageNumber = page ?? 1;
-            var pageSize = 15;
+            var pageSize = 10;
+            ViewBag.PageSize = pageSize;
+            ViewBag.Page = page;
 
             return View(items.ToPagedList(pageNumber, pageSize));
         }
@@ -29,6 +32,27 @@ namespace ShopOnline.Areas.Admin.Controllers
         {
             var item = db.Orders.Find(id);
             return View(item);
+        }
+
+        public ActionResult Partial_SanPham(int? id)
+        {
+            var item = db.OrderDetails.Where(x => x.OrderId == id).ToList();
+            return PartialView(item);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateStatus(int id, int status)
+        {
+            var item = db.Orders.Find(id);
+            if (item != null)
+            {
+                db.Orders.Attach(item);
+                item.TypePayment= status;
+                db.Entry(item).Property(x=>x.TypePayment).IsModified = true;
+                db.SaveChanges();
+                return Json(new {message = "Success", Success = true});
+            }
+            return Json(new {message = "Fail", Success = false});
         }
     }
 }

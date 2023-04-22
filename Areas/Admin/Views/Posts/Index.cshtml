@@ -45,7 +45,7 @@
             <h3 class="card-title">Danh sach @ViewBag.Title</h3>
 
             <div class="card-tools">
-                <a href="/admin/news/add" class="btn btn-primary">Thêm mới</a>
+                <a href="/admin/posts/add" class="btn btn-primary">Thêm mới</a>
                 <a href="#" class="btn btn-danger" id="btnDeleteAll">Xóa</a>
             </div>
         </div>
@@ -80,7 +80,7 @@
                                 </td>
                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                                 <td>
-                                    <a href="/admin/news/edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
+                                    <a href="/admin/posts/edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
                                     <a href="#" @*/admin/category/delete/@item.Id*@ data-id="@item.Id" class="btn btn-sm btn-danger btnDelete">Xoa</a>
                                 </td>
                             </tr>
@@ -168,7 +168,7 @@
                 var btn = $(this);
                 var id = btn.data("id");
                 $.ajax({
-                    url: '/admin/news/isActive',
+                    url: '/admin/posts/isActive',
                     type: 'POST',
                     data: { id: id },
                     success: function (rs) {

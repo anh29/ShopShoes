@@ -15,7 +15,7 @@ namespace ShopOnline.Areas.Admin.Controllers
         public ActionResult Index()
         {
             var items = db.Posts.ToList();
-            return View();
+            return View(items);
         }
         public ActionResult Add()
         {

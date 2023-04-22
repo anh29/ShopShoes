@@ -87,29 +87,7 @@
                     <h2>Danh sách sản phẩm</h2>
                 </div>
                 <div class="col-12">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Giá</th>
-                                <th>Số lượng</th>
-                                <th>Thành tiền</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.OrderDetails)
-                            {
-                                <tr>
-                                    <td></td>
-                                    <td>@item.Product.Title</td>
-                                    <td>@item.Price</td>
-                                    <td>@item.Quantity</td>
-                                    <td>@ShopOnline.Common.Common.FormatNumber((item.Price * item.Quantity), 0)</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                    @Html.Action("Partial_SanPham", "Order", new { id = Model.Id });
                 </div>
             </div>
         </div>

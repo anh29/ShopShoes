@@ -1,5 +1,6 @@
-﻿
-@model IEnumerable<ShopOnline.Models.EF.News>
+﻿@model PagedList.PagedList<ShopOnline.Models.EF.News>
+@using PagedList.Mvc;
+@using PagedList;
 @{
     ViewBag.Title = "Danh sách tin tức";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -42,7 +43,7 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Danh sach @ViewBag.Title</h3>
+            <h3 class="card-title">@ViewBag.Title</h3>
 
             <div class="card-tools">
                 <a href="/admin/news/add" class="btn btn-primary">Thêm mới</a>
@@ -50,6 +51,21 @@
             </div>
         </div>
         <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    @* search *@
+                    @using (Html.BeginForm("index", "News", FormMethod.Get, new { }))
+                    {
+                        <div class="input-group input-group-sm">
+                            @Html.TextBox("Searchtext", new { @class = "form-control" })
+                            @*<input type="text" name="searchtext" class="form-control" />*@
+                            <span class="input-group-append">
+                                <button type="submit" class="btn btn-info btn-flat">Tim kiem</button>
+                            </span>
+                        </div>
+                    }
+                </div>
+            </div>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -66,7 +82,7 @@
                 <tbody>
                     @if (Model != null && Model.Any())
                     {
-                        var i = 1;
+                        var i = ((ViewBag.Page -1) * ViewBag.PageSize) + 1;
                         foreach (var item in Model)
                         {
                             var strCheck = item.IsActive ? "<i class='fa fa-check text-success'></i>" : "<i class=\"fas fa-times text-danger\"></i>";
@@ -81,9 +97,9 @@
                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                                 <td>
                                     <a href="/admin/news/edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
-                                    <a href="#" @*/admin/category/delete/@item.Id*@ data-id="@item.Id" class="btn btn-sm btn-danger btnDelete">Xoa</a>
+                                    <a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete">Xoa</a>
                                 </td>
-                            </tr> 
+                            </tr>
                             i++;
                         }
                     }
@@ -95,6 +111,12 @@
                     }
                 </tbody>
             </table>
+            <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6" style="text-align: right;">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                </div>
+            </div>
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
@@ -116,7 +138,7 @@
             // Xử lý sự kiện khi người dùng nhấp vào nút "btnDeleteAll"
             $('#btnDeleteAll').click(function () {
                 var checkbox = $('input[type=checkbox]:checked');
-                var str ="";
+                var str = "";
                 if (checkbox.length > 0) {
                     var conf = confirm("Bạn có muốn xóa các bản ghi này không?")
                     if (conf === true) {
@@ -188,4 +210,4 @@
             });
         });
     </script>
-    }
+}
