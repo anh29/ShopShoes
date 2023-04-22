@@ -1,11 +1,11 @@
 ﻿@model ShopOnline.Models.OrderViewModel
-@using (Ajax.BeginForm("CheckOut", "ShoppingCart", new AjaxOptions
+@using (Ajax.BeginForm("CheckOutOrder", "ShoppingCart", new AjaxOptions
 {
     HttpMethod = "POST",
     UpdateTargetId = "load_data",
     OnComplete = "OnSuccessCO",
     OnFailure = "OnFailure"
-}, new { @Id = "myForm"}))
+}, new { @Id = "myForm" }))
 {
     @Html.AntiForgeryToken()
     <h3>Thông tin khách hàng</h3>
@@ -33,6 +33,6 @@
         </select>
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-block btn-success id="btnDathang">Đặt hàng</button>
+        <button type="submit" class="btn btn-block btn-success">Đặt hàng</button>
     </div>
 }
