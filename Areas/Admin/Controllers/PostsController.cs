@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace ShopOnline.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin, Employee")]
     public class PostsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

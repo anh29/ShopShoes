@@ -57,7 +57,7 @@
                     @using (Html.BeginForm("index", "News", FormMethod.Get, new { }))
                     {
                         <div class="input-group input-group-sm">
-                            @Html.TextBox("Searchtext", new { @class = "form-control" })
+                            @Html.TextBox("Searchtext", null, new { @class = "form-control" })
                             @*<input type="text" name="searchtext" class="form-control" />*@
                             <span class="input-group-append">
                                 <button type="submit" class="btn btn-info btn-flat">Tim kiem</button>

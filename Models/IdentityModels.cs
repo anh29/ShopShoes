@@ -28,6 +28,7 @@ namespace ShopOnline.Models
         {
         }
 
+        public DbSet<ThongKe> ThongKes { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Adv> Advs { get; set; }
         public DbSet<Post> Posts { get; set; }
