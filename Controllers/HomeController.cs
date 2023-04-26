@@ -1,4 +1,5 @@
 ﻿using ShopOnline.Models;
+using ShopOnline.Models.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,28 @@ namespace ShopOnline.Controllers
 {
     public class HomeController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         public ActionResult Index()
         {
             return View();
         }
 
+        public ActionResult Partial_Subscribe()
+        {
+            return PartialView();
+        }
+
+        [HttpPost]
+        public ActionResult Subscribe(Subscribe req)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Subscribes.Add(new Subscribe { Email = req.Email, CreatedDate = DateTime.Now});
+                db.SaveChanges();
+                return Json(new {Success = true});
+            }
+            return View("Partial_Subscribe", req);
+        }
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@*@using ShopOnline.Common*@
+<!DOCTYPE html>
 <html>
 <head>
     <title>Twinkle Toes</title>
@@ -33,7 +34,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="top_nav_left">free shipping on all u.s orders over $50</div>
+                            <div class="top_nav_left">@*Hotline: @SettingHelper.GetValue("SettingHotline")*@</div>
                         </div>
                         <div class="col-md-6 text-right">
                             <div class="top_nav_right">
@@ -66,14 +67,32 @@
                                         </ul>
                                     </li>
                                     <li class="account">
-                                        <a href="#">
-                                            My Account
-                                            <i class="fa fa-angle-down"></i>
-                                        </a>
-                                        <ul class="account_selection">
-                                            <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-                                            <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
-                                        </ul>
+                                        @if (!Request.IsAuthenticated)
+                                        {
+                                            <a href="#">
+                                                My Account
+                                                <i class="fa fa-angle-down"></i>
+                                            </a>
+                                            <ul class="account_selection">
+                                                <li><a href="/account/login"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                                                <li><a href="/account/register"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                                            </ul>
+                                        }
+                                        else
+                                        {
+                                            <a href="#">
+                                                @User.Identity.Name
+                                                <i class="fa fa-angle-down"></i>
+                                            </a>
+                                            <ul class="account_selection">
+                                                <li><a href="/"><i class="fa fa-sign-in" aria-hidden="true"></i>Profile</a></li>
+                                                <li>
+                                                    <a href="javascript:document.getElementById('LogOffForm').submit()" class="nav-link">
+                                                        <i class="fa fa-user-plus"></i>Đăng xuất
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        }
                                     </li>
                                 </ul>
                             </div>
@@ -82,6 +101,15 @@
                 </div>
             </div>
 
+            @if (Request.IsAuthenticated)
+            {
+                <div style="display: none;">
+                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { @id = "LogOffForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                    }
+                </div>
+            }
             <!-- Main Navigation -->
 
             <div class="main_nav_container">
@@ -114,7 +142,7 @@
 
         </header>
 
-        <div class="fs_menu_overlay"></div>
+        @*<div class="fs_menu_overlay"></div>
         <div class="hamburger_menu">
             <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
             <div class="hamburger_menu_content text-right">
@@ -149,8 +177,8 @@
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="menu_selection">
-                            <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-                            <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                            <li><a href="/account/login"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                            <li><a href="/account/register"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
                         </ul>
                     </li>
                     <li class="menu_item"><a href="#">home</a></li>
@@ -161,30 +189,10 @@
                     <li class="menu_item"><a href="#">contact</a></li>
                 </ul>
             </div>
-        </div>
+        </div>*@
         @RenderBody()
         <!-- Newsletter -->
-
-        <div class="newsletter">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="newsletter_text d-flex flex-column justify-content-center align-items-lg-start align-items-md-center text-center">
-                            <h4>Newsletter</h4>
-                            <p>Subscribe to our newsletter and get 20% off your first purchase</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <form action="post">
-                            <div class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-lg-end justify-content-center">
-                                <input id="newsletter_email" type="email" placeholder="Your email" required="required" data-error="Valid email is required.">
-                                <button id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300" value="Submit">subscribe</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @Html.Action("Partial_Subscribe", "Home")
 
         <!-- Footer -->
 
