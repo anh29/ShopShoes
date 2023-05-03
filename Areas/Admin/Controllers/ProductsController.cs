@@ -17,7 +17,7 @@ namespace ShopOnline.Areas.Admin.Controllers
         public ActionResult Index(int? page)
         {
             IEnumerable<Product> items = db.Products.OrderByDescending(x => x.Id);
-            var pageSize = 10;
+            var pageSize = 5;
             if (page == null)
             {
                 page = 1;
@@ -82,7 +82,6 @@ namespace ShopOnline.Areas.Admin.Controllers
             return View(model);
         }
 
-
         public ActionResult Edit(int id)
         {
             ViewBag.ProductCategory = new SelectList(db.ProductCategories.ToList(), "Id", "Title");
@@ -116,7 +115,26 @@ namespace ShopOnline.Areas.Admin.Controllers
                 db.SaveChanges();
                 return Json(new { success = true });
             }
+            return Json(new { success = false });
+        }
 
+        [HttpPost]
+        public ActionResult DeleteAll(string ids)
+        {
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var items = ids.Split(',');
+                if (items != null && items.Any())
+                {
+                    foreach (var item in items)
+                    {
+                        var obj = db.Products.Find(Convert.ToInt32(item));
+                        db.Products.Remove(obj);
+                        db.SaveChanges();
+                    }
+                }
+                return Json(new { success = true });
+            }
             return Json(new { success = false });
         }
 

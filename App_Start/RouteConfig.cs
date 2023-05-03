@@ -28,6 +28,12 @@ namespace ShopOnline
                 namespaces: new[] { "ShopOnline.Controllers" }
             );
             routes.MapRoute(
+                name: "NewsList",
+                url: "tin-tuc",
+                defaults: new { controller = "News", action = "Index", alias = UrlParameter.Optional },
+                namespaces: new[] { "ShopOnline.Controllers" }
+            );
+            routes.MapRoute(
                 name: "CategoryProduct",
                 url: "danh-muc-san-pham/{alias}-p{id}",
                 defaults: new { controller = "Products", action = "ProductCategory", id = UrlParameter.Optional },
@@ -37,6 +43,12 @@ namespace ShopOnline
                 name: "DetailProduct",
                 url: "chi-tiet/{alias}-{id}",
                 defaults: new { controller = "Products", action = "Index", id = UrlParameter.Optional },
+                namespaces: new[] { "ShopOnline.Controllers" }
+            );
+            routes.MapRoute(
+                name: "DetailNews",
+                url: "{alias}-n{id}",
+                defaults: new { controller = "News", action = "Detail", id = UrlParameter.Optional },
                 namespaces: new[] { "ShopOnline.Controllers" }
             );
             routes.MapRoute(

@@ -232,3 +232,4 @@ D:\C#\WebYtb\ShopOnline\ShopShoes\obj\Debug\ShopOnline.Migrations.UpdateCheckOut
 D:\C#\WebYtb\ShopOnline\ShopShoes\obj\Debug\ShopOnline.Migrations.CreateTBThongKe.resources
 D:\C#\WebYtb\ShopOnline\ShopShoes\bin\Dapper.dll
 D:\C#\WebYtb\ShopOnline\ShopShoes\bin\Dapper.xml
+D:\C#\WebYtb\ShopOnline\ShopShoes\obj\Debug\ShopOnline.Migrations.UpdateOriginalPrice.resources

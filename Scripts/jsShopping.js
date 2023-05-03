@@ -23,17 +23,6 @@ $(document).ready(function () {
             }
         });
     });
-    //$('#myForm').submit(function (e) {
-    //    e.preventDefault(); // Ngăn chặn form submit mặc định
-    //    $.ajax({
-    //        url: $(this).attr('action'), // Lấy URL của action trong form
-    //        type: $(this).attr('method'), // Lấy phương thức gửi form
-    //        data: $(this).serialize(), // Lấy dữ liệu trong form
-    //        success: function () {
-    //            window.location.href = '/thanh-cong'; // Chuyển hướng đến trang "thanh-cong"
-    //        }
-    //    });
-    //});
     $('body').on('click', '.btnUpdate', function (e) {
         e.preventDefault();
         var id = $(this).data("id");

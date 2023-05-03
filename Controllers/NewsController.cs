@@ -1,4 +1,6 @@
-﻿using ShopOnline.Models;
+﻿using PagedList;
+using ShopOnline.Models;
+using ShopOnline.Models.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +12,28 @@ namespace ShopOnline.Controllers
     public class NewsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        [Route("tin-tuc")]
         // GET: News
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View();
+            var pageSize = 5;
+            if (page == null)
+            {
+                page = 1;
+            }
+            IEnumerable<News> items = db.News.OrderByDescending(x => x.Id);
+            var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+            items = items.ToPagedList(pageIndex, pageSize);
+            ViewBag.PageSize = pageSize;
+            ViewBag.Page = page;
+            return View(items);
         }
-
+        [Route("{alias}-n{id}")]
+        public ActionResult Detail(int id)
+        {
+            var item = db.News.Find(id);
+            return View(item);
+        }
         public ActionResult Partial_News_Home()
         {
             var items = db.News.Take(3).ToList();

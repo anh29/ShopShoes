@@ -46,6 +46,7 @@ namespace ShopOnline.Controllers
                 {
                     Order order = new Order();
                     order.CustomerName = req.CustomerName;
+                    order.Email = req.Email;
                     order.Phone = req.Phone;
                     order.Address = req.Address;
                     cart.Items.ForEach(x => order.OrderDetails.Add(new OrderDetail
