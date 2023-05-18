@@ -1,5 +1,6 @@
 ﻿using PagedList;
 using ShopOnline.Models;
+using ShopOnline.Models.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,9 @@ namespace ShopOnline.Areas.Admin.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Admin/Order
-        public ActionResult Index(int? page)
+        public ActionResult Index(string Searchtext, int? page)
         {
-            var items = db.Orders.OrderByDescending(x => x.CreatedDate).ToList();
+            IEnumerable<Order> items = db.Orders.OrderByDescending(x => x.CreatedDate).ToList();
 
             if (page == null)
             {
@@ -26,7 +27,10 @@ namespace ShopOnline.Areas.Admin.Controllers
             var pageSize = 10;
             ViewBag.PageSize = pageSize;
             ViewBag.Page = page;
-
+            if (!string.IsNullOrEmpty(Searchtext))
+            {
+                items = items.Where(x => x.CustomerName.ToLower().Contains(Searchtext.ToLower()) || x.UserId.ToLower().Contains(Searchtext.ToLower()));
+            }
             return View(items.ToPagedList(pageNumber, pageSize));
         }
         public ActionResult Detail(int id)

@@ -8,6 +8,7 @@ using ShopOnline.Models.EF;
 
 namespace ShopOnline.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ProductCategoryController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -31,7 +32,7 @@ namespace ShopOnline.Areas.Admin.Controllers
             {
                 model.CreatedDate = DateTime.Now;
                 model.ModifiedDate = DateTime.Now;
-                model.Alias = ShopOnline.Models.Common.Filter.FilterChar(model.Title);
+                model.Alias = ShopOnline.Models.Common.Filter.FilterChar(model.Title).Replace(".", "%");
                 db.ProductCategories.Add(model);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -51,7 +52,6 @@ namespace ShopOnline.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 model.ModifiedDate = DateTime.Now;
-                model.Alias = ShopOnline.Models.Common.Filter.FilterChar(model.Title);
                 db.ProductCategories.Attach(model);
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();

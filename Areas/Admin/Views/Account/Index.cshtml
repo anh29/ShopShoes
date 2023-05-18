@@ -12,10 +12,10 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/home" class="nav-link">Trang chu</a>
+            <a href="/admin/home" class="nav-link">Trang chủ</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin" class="nav-link">@ViewBag.Title</a>
+            <a href="#" class="nav-link">@ViewBag.Title</a>
         </li>
     </ul>
 }
@@ -55,8 +55,9 @@
                                 <td>@item.FullName</td>
                                 <td>@item.Email</td>
                                 <td>
-                                    <a href="/admin/account/edit/@item.UserName" class="btn btn-sm btn-primary">Sửa</a>
-                                    <a href="#" data-user="@item.UserName" class="btn btn-sm btn-danger btnDelete">Xóa</a>
+                                    @*<a href="/admin/account/edit/@item.UserName" class="btn btn-sm btn-primary">Sửa</a>*@
+                                    <a href="#" data-id="@item.Id.ToString()" class="btn btn-sm btn-danger btnDelete">Xóa</a>
+                                    @*<a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete" onclick="abc ('@item.Id')">Xóa</a>*@
                                 </td>
                             </tr>
                             i++;
@@ -75,3 +76,25 @@
 
 </section>
 <!-- /.content -->
+
+@section scripts {
+    <script>
+        $('body').on('click', '.btnDelete', function () {
+            var id = $(this).data("id");
+            var conf = confirm("Bạn có muốn xóa bản ghi này không?");
+            if (conf == true) {
+                $.ajax({
+                    url: '/admin/account/delete',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (rs) {
+                        if (rs.success) {
+                            $(id).remove();
+                            location.reload();
+                        }
+                    }
+                })
+            }
+        });
+    </script>
+    }

@@ -36,10 +36,6 @@
             <h3 class="card-title">Ảnh sản phẩm</h3>
 
             <div class="card-tools">
-                <button type="button" class="btn btn-danger btnDeleteAll" title="Collapse">
-                    Xóa hết
-                </button>
-
                 <input type="button" value="Tải ảnh" class="btn btn-success" onclick="BrowseServer('txtImage');" />
             </div>
         </div>
@@ -53,14 +49,9 @@
                             <img src="@item.Image" width="200" />
                             <div class="box-btn">
                                 <a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete"><i class="fa fa-trash"></i></a>
-                                @if (item.IsDefault)
-                                {
-                                    <a href="#" data-id="@item.Id" class="btn btn-sm btn-success btnDefault"><i class="fa fa-check"></i></a>
-                                }
-                                else
-                                {
-                                    <a href="#" data-id="@item.Id" class="btn btn-sm btn-warning btnDefault">X</a>
-                                }
+                                <a href="#" data-id="@item.Id" class="btn btn-sm @(item.IsDefault ? "btn-success" : "btn-warning") btnDefault">
+                                    <i class="fa @(item.IsDefault ? "fa-check" : "fa-times")"></i>
+                                </a>
                             </div>
                         </li>
                     }
@@ -99,32 +90,8 @@
                 }
             }
         });
-    };
+    }
     $(document).ready(function () {
-        var str = "";
-        $('.btnDelete').each(function () {
-            str += $(this).attr('data-id') + ",";
-        });
-        $('.btnDeleteAll').click(function () {
-            if (str.length > 0) {
-                var conf = confirm("Bạn có muốn xóa các bản ghi này không?")
-                if (conf === true) {
-                    $.ajax({
-                        url: '/admin/productimage/deleteAll',
-                        type: 'POST',
-                        data: { ids: str },
-                        success: function (rs) {
-                            if (rs.success) {
-                                location.reload();
-                            }
-                        }
-                    });
-                }
-            }
-            else {
-                alert("Không có ảnh. Vui lòng thêm ảnh");
-            }
-        });
         $('body').on('click', '.btnDelete', function () {
             var id = $(this).data('id');
             var conf = confirm('ban có muốn xóa ảnh này không?');
@@ -136,10 +103,34 @@
                     success: function (rs) {
                         if (rs.success) {
                             $('#trow_' + id).remove();
+                            location.reload();
                         }
                     }
                 });
             }
+        });
+    });
+    $(document).ready(function () {
+        $('body').on('click', '.btnDefault', function () {
+            var id = $(this).data('id');
+            var isDefault = $(this).hasClass('btn-success'); // Kiểm tra xem nút hiện tại có class 'btn-success' hay không
+
+            // Gửi yêu cầu AJAX để cập nhật thuộc tính "isDefault" của hình ảnh
+            $.ajax({
+                url: '/admin/productimage/SetDefault',
+                type: 'POST',
+                data: { id: id, isDefault: !isDefault }, // Gửi giá trị ngược lại của isDefault
+                success: function (rs) {
+                    if (rs.success) {
+                        // Xóa class cũ và thêm class mới để thay đổi biểu tượng và màu sắc của nút
+                        $('.btnDefault[data-id="' + id + '"]').removeClass('btn-success btn-warning').addClass(!isDefault ? 'btn-success' : 'btn-warning');
+                        // Cập nhật biểu tượng của nút
+                        $('.btnDefault[data-id="' + id + '"] i').removeClass('fa-check fa-times').addClass(!isDefault ? 'fa-check' : 'fa-times');
+
+                        // Tùy chỉnh hành động khác (nếu cần)
+                    }
+                }
+            });
         });
     });
 </script>

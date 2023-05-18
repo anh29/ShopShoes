@@ -20,8 +20,6 @@ namespace ShopOnline.Models.EF
         public string Description { get; set; }
         [StringLength(500)]
         public string Image { get; set; }
-        [StringLength(500)]
-        public string Link { get; set; }
         public int Type { get; set; }
     }
 }

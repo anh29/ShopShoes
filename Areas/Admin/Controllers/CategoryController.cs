@@ -31,11 +31,11 @@ namespace ShopOnline.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Add(Category model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 model.CreatedDate = DateTime.Now;
                 model.ModifiedDate = DateTime.Now;
-                model.Alias = ShopOnline.Models.Common.Filter.FilterChar(model.Title);
+                model.Alias = ShopOnline.Models.Common.Filter.FilterChar(model.Title).Replace(".", "%");
                 db.Categories.Add(model);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -54,19 +54,9 @@ namespace ShopOnline.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                //model là đối tượng Category cần được thực hiện các thao tác sửa đổi -> Attach để đính kèm đối tượng này vào context của database -> db.Entry để cập nhật dữ liệu
-                db.Categories.Attach(model);
                 model.ModifiedDate = DateTime.Now;
-                model.Alias = ShopOnline.Models.Common.Filter.FilterChar(model.Title);
-                db.Entry(model).Property(x => x.Title).IsModified = true; //IsModified -> để đánh dấu xem thuộc tính đó đã bị sửa đổi hay chưa.
-                db.Entry(model).Property(x => x.Description).IsModified = true;
-                db.Entry(model).Property(x => x.Alias).IsModified = true;
-                db.Entry(model).Property(x => x.SeoDescription).IsModified = true;
-                db.Entry(model).Property(x => x.SeoKeywords).IsModified = true;
-                db.Entry(model).Property(x => x.SeoTitle).IsModified = true;
-                db.Entry(model).Property(x => x.Position).IsModified = true;
-                db.Entry(model).Property(x => x.ModifiedDate).IsModified = true;
-                db.Entry(model).Property(x => x.Modifiedby).IsModified = true;
+                db.Categories.Attach(model);
+                db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -84,41 +74,5 @@ namespace ShopOnline.Areas.Admin.Controllers
             }
             return Json(new { success = false });
         }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(Category model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Categories.Remove(model);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(model);
-        //}
-
-        //[HttpGet]
-        //public ActionResult Delete(int? id, bool? saveChangesError = false)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-
-        //    if (saveChangesError.GetValueOrDefault())
-        //    {
-        //        ViewBag.ErrorMessage = "Xóa danh mục thất bại. Vui lòng thử lại, hoặc liên hệ với quản trị viên.";
-        //    }
-
-        //    var item = db.Categories.Find(id.Value);
-
-        //    if (item == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-
-        //    return View(item);
-        //}
     }
 }

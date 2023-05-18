@@ -16,7 +16,7 @@
                     <ul>
                         <li><a href="/">Home</a></li>
                         <li><a href="/danh-muc-san-pham/@Model.ProductCategory.Alias-p@(Model.ProductCategory.Id)"><i class="fa fa-angle-right" aria-hidden="true"></i>@Model.ProductCategory.Title</a></li>
-                        <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>@Model.ProductCategory.Title</a></li>
+                        <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>@Model.Title</a></li>
                     </ul>
                 </div>
 
@@ -84,166 +84,57 @@
                         <span>Quantity:</span>
                         <div class="quantity_selector">
                             <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                            <span id="quantity_value">1</span>
+                            <input type="number" id="quantity_value" value="1" min="1" max="@Model.Quantity" />
                             <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
-                        <div class="red_button add_to_cart_button"><a href="#" class="btnAddToCart" data-id="@Model.Id">add to cart</a></div>
+                        <div class="red_button add_to_cart_button">
+                            <a href="#" class="btnAddToCart" data-id="@Model.Id">add to cart</a>
+                        </div>
                         <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
                     </div>
+                    <div id="quantity_error" style="color: red;"></div> <!-- Error message container -->
                 </div>
             </div>
         </div>
-
-    </div>
-    <div class="tabs_section_container">
-
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="tabs_container">
-                        <ul class="tabs d-flex flex-sm-row flex-column align-items-left align-items-md-center justify-content-center">
-                            <li class="tab active" data-active-tab="tab_1"><span>Description</span></li>
-                            <li class="tab" data-active-tab="tab_3"><span>Reviews (2)</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-
-                    <!-- Tab Description -->
-
-                    <div id="tab_1" class="tab_container active">
-                        <div class="row">
-                            <div class="col-lg-5 desc_col">
-                                <div class="tab_title">
-                                    <h4>Description</h4>
-                                </div>
-                                <div class="tab_text_block">
-                                    <h2>Pocket cotton sweatshirt</h2>
-                                    <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
-                                </div>
-                                <div class="tab_image">
-                                    <img src="images/desc_1.jpg" alt="">
-                                </div>
-                                <div class="tab_text_block">
-                                    <h2>Pocket cotton sweatshirt</h2>
-                                    <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-5 offset-lg-2 desc_col">
-                                <div class="tab_image">
-                                    <img src="images/desc_2.jpg" alt="">
-                                </div>
-                                <div class="tab_text_block">
-                                    <h2>Pocket cotton sweatshirt</h2>
-                                    <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
-                                </div>
-                                <div class="tab_image desc_last">
-                                    <img src="images/desc_3.jpg" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tab Additional Info -->
-                    <!-- Tab Reviews -->
-
-                    <div id="tab_3" class="tab_container">
-                        <div class="row">
-
-                            <!-- User Reviews -->
-
-                            <div class="col-lg-6 reviews_col">
-                                <div class="tab_title reviews_title">
-                                    <h4>Reviews (2)</h4>
-                                </div>
-
-                                <!-- User Review -->
-
-                                <div class="user_review_container d-flex flex-column flex-sm-row">
-                                    <div class="user">
-                                        <div class="user_pic"></div>
-                                        <div class="user_rating">
-                                            <ul class="star_rating">
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="review">
-                                        <div class="review_date">27 Aug 2016</div>
-                                        <div class="user_name">Brandon William</div>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                    </div>
-                                </div>
-
-                                <!-- User Review -->
-
-                                <div class="user_review_container d-flex flex-column flex-sm-row">
-                                    <div class="user">
-                                        <div class="user_pic"></div>
-                                        <div class="user_rating">
-                                            <ul class="star_rating">
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="review">
-                                        <div class="review_date">27 Aug 2016</div>
-                                        <div class="user_name">Brandon William</div>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Add Review -->
-
-                            <div class="col-lg-6 add_review_col">
-
-                                <div class="add_review">
-                                    <form id="review_form" action="post">
-                                        <div>
-                                            <h1>Add Review</h1>
-                                            <input id="review_name" class="form_input input_name" type="text" name="name" placeholder="Name*" required="required" data-error="Name is required.">
-                                            <input id="review_email" class="form_input input_email" type="email" name="email" placeholder="Email*" required="required" data-error="Valid email is required.">
-                                        </div>
-                                        <div>
-                                            <h1>Your Rating:</h1>
-                                            <ul class="user_star_rating">
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                                            </ul>
-                                            <textarea id="review_message" class="input_review" name="message" placeholder="Your Review" rows="4" required data-error="Please, leave us a review."></textarea>
-                                        </div>
-                                        <div class="text-left text-sm-right">
-                                            <button id="review_submit" type="submit" class="red_button review_submit_btn trans_300" value="Submit">submit</button>
-                                        </div>
-                                    </form>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
     </div>
 }
 
 @section scripts {
     <script src="~/Content/assets/js/single_custom.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var quantityInput = document.getElementById("quantity_value");
+            var maxValue = @Model.Quantity;
+
+            document.querySelector(".plus").addEventListener("click", function() {
+                var currentValue = parseInt(quantityInput.value);
+                if (currentValue < maxValue) {
+                    quantityInput.value = currentValue + 1;
+                    document.getElementById("quantity_error").textContent = ""; // Clear error message
+                } else {
+                    document.getElementById("quantity_error").textContent = "Bạn đã nhập quá số lượng.";
+                }
+            });
+
+            document.querySelector(".minus").addEventListener("click", function() {
+                var currentValue = parseInt(quantityInput.value);
+                if (currentValue > 1) {
+                    quantityInput.value = currentValue - 1;
+                    document.getElementById("quantity_error").textContent = ""; // Clear error message
+                }
+            });
+
+            quantityInput.addEventListener("input", function() {
+                var currentValue = parseInt(quantityInput.value);
+                if (isNaN(currentValue) || currentValue < 1) {
+                    quantityInput.value = 1;
+                } else if (currentValue > maxValue) {
+                    quantityInput.value = maxValue;
+                    document.getElementById("quantity_error").textContent = "Bạn đã nhập quá giá trị lớn nhất.";
+                } else {
+                    document.getElementById("quantity_error").textContent = ""; // Clear error message
+                }
+            });
+        });
+    </script>
 }

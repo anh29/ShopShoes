@@ -9,6 +9,7 @@ using WebBanHangOnline.Models;
 
 namespace ShopOnline.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class SettingSystemController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

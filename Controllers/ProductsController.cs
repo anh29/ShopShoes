@@ -1,4 +1,6 @@
-﻿using ShopOnline.Models;
+﻿using PagedList;
+using ShopOnline.Models;
+using ShopOnline.Models.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +14,26 @@ namespace ShopOnline.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Products
         [Route("san-pham")]
-        public ActionResult Index(int? id)
+        public ActionResult Index(string Searchtext, int? page, int? id)
         {
-            var items = db.Products.ToList();
+            var pageSize = 8;
+            if (page == null)
+            {
+                page = 1;
+            }
+            IEnumerable<Product> items = db.Products.OrderByDescending(x => x.Id);
             if (id != null)
             {
                 items = items.Where(x => x.ProductCategoryId == id).ToList();
             }
+            if (!string.IsNullOrEmpty(Searchtext))
+            {
+                items = items.Where(x => x.Alias.Contains(Searchtext) || x.Title.Contains(Searchtext));
+            }
+            var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+            items = items.ToPagedList(pageIndex, pageSize);
+            ViewBag.PageSize = pageSize;
+            ViewBag.Page = page;
             return View(items);
         }
         [Route("danh-muc-san-pham/{alias}-p{id}")]

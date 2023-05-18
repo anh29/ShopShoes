@@ -36,7 +36,7 @@
             @if (ViewBag.CheckCart != null)
             {
                 <div class="row">
-                    <div id="show_success"></div>
+                    <div id="show_fail"></div>
                     <div class="col-md-9">
                         @Html.Action("Partial_CheckOut", "ShoppingCart")
                     </div>
@@ -63,7 +63,7 @@
     <script>
         function OnFailure(rs) {
             if (!rs.Success) {
-                $('#show_success').html("Bạn đã mua hàng thất bại! Xin vui lòng thử lại.")
+                $('#show_fail').html("Bạn đã mua hàng thất bại! Xin vui lòng thử lại.")
             }
         }
         $(document).ready(function () {

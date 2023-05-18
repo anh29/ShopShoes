@@ -1,0 +1,79 @@
+﻿@model PagedList.PagedList<ShopOnline.Models.EF.Post>
+@using PagedList.Mvc;
+@using PagedList;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/main_styles.css">
+<style>
+    .Post_section_container {
+        margin-top: 180px;
+    }
+
+    .row-item-new {
+        margin-bottom: 20px;
+    }
+
+    .title-Post {
+        font-size: 24px;
+        border-bottom: 1px solid;
+        padding: 15px 0;
+        margin-bottom: 25px;
+    }
+
+    .img-box img {
+        max-width: 190px;
+        max-height: 100%;
+    }
+
+    .description-box {
+        max-height: calc(5 * 1.2em); /* Đặt giới hạn chiều cao là 5 dòng */
+        overflow: hidden;
+        line-height: 1.2em; /* Đặt chiều cao dòng là 1.2em */
+        white-space: normal; /* Cho phép ngắt dòng */
+        text-overflow: ellipsis; /* Đặt dấu "..." */
+        display: -webkit-box; /* Sử dụng thuộc tính display của -webkit-box */
+        -webkit-line-clamp: 5; /* Đặt số dòng muốn hiển thị là 5 */
+        -webkit-box-orient: vertical; /* Đặt hướng của -webkit-box là dọc */
+    }
+</style>
+<div class="container Post_section_container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="title-Post">Bài viết</h1>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div class="row" style="margin: 10px 0;">
+                <div class="col-md-3">
+                    <div class="img-box">
+                        <a href="" title="@item.Title"><img src="@item.Image" alt="@item.Title" /></a>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="content-box">
+                        <h3><a href="/bai-viet/@item.Alias-p@(item.Id)" title="@item.Title">@item.Title</a></h3>
+                        <div class="description-box">
+                            @item.Description
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col-6"></div>
+            <div class="col-6" style="text-align: right;">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+            </div>
+        </div>
+    }
+    else
+            {
+                <h3>Không có bài viết nào.</h3>
+            }
+</div>

@@ -48,9 +48,9 @@ namespace ShopOnline.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 model.CreatedDate = DateTime.Now;
-                model.CategoryId = 5;
+                model.CategoryId = 3;
                 model.ModifiedDate = DateTime.Now;
-                model.Alias = ShopOnline.Models.Common.Filter.FilterChar(model.Title);
+                model.Alias = ShopOnline.Models.Common.Filter.FilterChar(model.Title).Replace(".", "%");
                 db.News.Add(model);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -70,7 +70,6 @@ namespace ShopOnline.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 model.ModifiedDate = DateTime.Now;
-                model.Alias = ShopOnline.Models.Common.Filter.FilterChar(model.Title);
                 db.News.Attach(model);
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();

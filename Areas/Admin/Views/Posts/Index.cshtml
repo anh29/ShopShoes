@@ -12,37 +12,20 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/home" class="nav-link">Trang chu</a>
+            <a href="/admin/home" class="nav-link">Trang chủ</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
             <a href="/admin/category" class="nav-link">@ViewBag.Title</a>
         </li>
     </ul>
 }
-<!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Quản lý @ViewBag.Title</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">@ViewBag.Title</li>
-                </ol>
-            </div>
-        </div>
-    </div><!-- /.container-fluid -->
-</section>
-
 <!-- Main content -->
 <section class="content">
 
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Danh sach @ViewBag.Title</h3>
+            <h3 class="card-title">Danh sách @ViewBag.Title</h3>
 
             <div class="card-tools">
                 <a href="/admin/posts/add" class="btn btn-primary">Thêm mới</a>
@@ -81,7 +64,7 @@
                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                                 <td>
                                     <a href="/admin/posts/edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
-                                    <a href="#" @*/admin/category/delete/@item.Id*@ data-id="@item.Id" class="btn btn-sm btn-danger btnDelete">Xoa</a>
+                                    <a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete">Xóa</a>
                                 </td>
                             </tr>
 
@@ -91,7 +74,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="4">Ko co ban ghi nao!</td>
+                            <td colspan="4">Không có bản ghi nào!</td>
                         </tr>
                     }
                 </tbody>

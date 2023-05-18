@@ -68,12 +68,7 @@ namespace ShopOnline.Areas.Admin.Controllers
                 }
                 model.CreatedDate = DateTime.Now;
                 model.ModifiedDate = DateTime.Now;
-                if (string.IsNullOrEmpty(model.SeoTitle))
-                {
-                    model.SeoTitle = model.Title;
-                }
-                if (string.IsNullOrEmpty(model.Alias))
-                    model.Alias = ShopOnline.Models.Common.Filter.FilterChar(model.Title);
+                model.Alias = ShopOnline.Models.Common.Filter.FilterChar(model.Title).Replace(".", "%");
                 db.Products.Add(model);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -81,6 +76,7 @@ namespace ShopOnline.Areas.Admin.Controllers
             ViewBag.ProductCategory = new SelectList(db.ProductCategories.ToList(), "Id", "Title");
             return View(model);
         }
+
 
         public ActionResult Edit(int id)
         {
@@ -96,7 +92,6 @@ namespace ShopOnline.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 model.ModifiedDate = DateTime.Now;
-                model.Alias = ShopOnline.Models.Common.Filter.FilterChar(model.Title);
                 db.Products.Attach(model);
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
@@ -111,30 +106,20 @@ namespace ShopOnline.Areas.Admin.Controllers
             var item = db.Products.Find(id);
             if (item != null)
             {
+                var checkImg = item.ProductImage.Where(x => x.ProductId == item.Id);
+                if (checkImg != null)
+                {
+                    foreach (var img in checkImg)
+                    {
+                        db.ProductImages.Remove(img);
+                        db.SaveChanges();
+                    }
+                }
                 db.Products.Remove(item);
                 db.SaveChanges();
                 return Json(new { success = true });
             }
-            return Json(new { success = false });
-        }
 
-        [HttpPost]
-        public ActionResult DeleteAll(string ids)
-        {
-            if (!string.IsNullOrEmpty(ids))
-            {
-                var items = ids.Split(',');
-                if (items != null && items.Any())
-                {
-                    foreach (var item in items)
-                    {
-                        var obj = db.Products.Find(Convert.ToInt32(item));
-                        db.Products.Remove(obj);
-                        db.SaveChanges();
-                    }
-                }
-                return Json(new { success = true });
-            }
             return Json(new { success = false });
         }
 

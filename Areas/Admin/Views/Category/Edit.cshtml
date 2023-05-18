@@ -1,6 +1,6 @@
 ﻿@model ShopOnline.Models.EF.Category
 @{
-    ViewBag.Title = "Cap nhat danh muc";
+    ViewBag.Title = "Cập nhật danh mục";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,32 +12,16 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin" class="nav-link">Trang chu</a>
+            <a href="/admin/statistical" class="nav-link">Trang chủ</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/category" class="nav-link">Danh muc</a>
+            <a href="/admin/category" class="nav-link">Danh mục</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">Cap nhat</a>
+            <a href="#" class="nav-link">Cập nhật</a>
         </li>
     </ul>
 }
-<!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Cap nhat danh muc</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Danh muc</a></li>
-                    <li class="breadcrumb-item active">Cap nhat</li>
-                </ol>
-            </div>
-        </div>
-    </div><!-- /.container-fluid -->
-</section>
 
 <!-- Main content -->
 <section class="content">
@@ -45,27 +29,23 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Thong tin danh muc</h3>
+            <h3 class="card-title">Thông tin danh mục</h3>
         </div>
         <div class="card-body">
 
             <div class="bs-stepper-content">
-                @* @using -> sử dụng một namespace hoặc một khai báo dạng sử dụng (using statement) trong một khối mã HTML.
-                    Html.BeginForm -> để bắt đầu một form HTML và tạo ra một đối tượng FormContext để lưu trữ dữ liệu của form.
-                    "Edit" là tên của Action (phương thức xử lý yêu cầu từ người dùng) mà form này sẽ gửi dữ liệu tới khi được submit.
-                    "Category" là tên của Controller (lớp xử lý các yêu cầu từ người dùng) mà Action "Edit" thuộc về.
-                    FormMethod.Post xác định phương thức HTTP mà form sẽ sử dụng để gửi dữ liệu đi. Ở đây là HTTP POST.
-                    new { } đại diện cho các thuộc tính được sử dụng để tạo ra HTML attributes cho form, ví dụ như id, class, style,... Ở đây không có thuộc tính nào được sử dụng.
-                *@
                 @using (Html.BeginForm("Edit", "Category", FormMethod.Post, new { }))
                 {
                     @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(false)
+                    @Html.ValidationSummary(true)
                     @Html.HiddenFor(x => x.Id)
+                    @Html.HiddenFor(x => x.UserId, new { Value = User.Identity.Name })
+                    @Html.HiddenFor(x => x.Alias)
+                    @Html.HiddenFor(x => x.CreatedDate)
                     <!-- your steps content here -->
                     <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Ten danh muc moi</label>
+                            <label for="exampleInputEmail1">Tên danh mục mới</label>
                             @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên danh mục" }) @*trị của trường này thay đổi, giá trị của thuộc tính Title cũng sẽ thay đổi theo.*@
                             @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" }) @*để hiển thị thông báo lỗi liên quan đến một trường nhập liệu.*@
                         </div>
@@ -75,19 +55,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Thứ tự</label>
-                            @Html.TextBoxFor(x => x.Position, new { @class = "form-control", @Value = "1" })
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Seo title</label>
-                            @Html.TextAreaFor(x => x.SeoTitle, new { @class = "form-control" })
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Seo description</label>
-                            @Html.TextAreaFor(x => x.SeoDescription, new { @class = "form-control" })
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Seo keywords</label>
-                            @Html.TextAreaFor(x => x.SeoKeywords, new { @class = "form-control" })
+                            @Html.TextBoxFor(x => x.Position, new { @class = "form-control" })
                         </div>
                         <div class="form-group">
                             <a href="/admin/category" class="btn btn-danger">Quay lại</a>

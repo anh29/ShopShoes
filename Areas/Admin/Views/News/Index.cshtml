@@ -13,30 +13,13 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/home" class="nav-link">Trang chu</a>
+            <a href="/admin/home" class="nav-link">Trang chủ</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/category" class="nav-link">@ViewBag.Title</a>
+            <a href="/admin/news" class="nav-link">@ViewBag.Title</a>
         </li>
     </ul>
 }
-<!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Quan ly danh muc</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">@ViewBag.Title</li>
-                </ol>
-            </div>
-        </div>
-    </div><!-- /.container-fluid -->
-</section>
-
 <!-- Main content -->
 <section class="content">
 
@@ -47,20 +30,19 @@
 
             <div class="card-tools">
                 <a href="/admin/news/add" class="btn btn-primary">Thêm mới</a>
-                <a href="#" class="btn btn-danger" id="btnDeleteAll">Xóa</a>
+                <a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>
             </div>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-6">
-                    @* search *@
                     @using (Html.BeginForm("index", "News", FormMethod.Get, new { }))
                     {
                         <div class="input-group input-group-sm">
                             @Html.TextBox("Searchtext", null, new { @class = "form-control" })
-                            @*<input type="text" name="searchtext" class="form-control" />*@
+                            @*<input type="text" name="searchtext" class="form-control">*@
                             <span class="input-group-append">
-                                <button type="submit" class="btn btn-info btn-flat">Tim kiem</button>
+                                <button type="submit" class="btn btn-info btn-flat">Tìm kiếm</button>
                             </span>
                         </div>
                     }
@@ -69,35 +51,35 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th><input type="checkbox" id="selectAll" /></th>
+                        <th><input type="checkbox" id="SelectAll" /></th>
                         <th>STT</th>
                         <th>Hình ảnh</th>
                         <th>Tiêu đề</th>
-                        <th>Hiển thị</th>
                         <th>Ngày tạo</th>
-                        <th>Thứ tự</th>
-                        <th></th>
+                        <th>Hiển thị</th>
+
+                        <th style="width:150px;"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (Model != null && Model.Any())
                     {
-                        var i = ((ViewBag.Page -1) * ViewBag.PageSize) + 1;
+                        var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
                         foreach (var item in Model)
                         {
-                            var strCheck = item.IsActive ? "<i class='fa fa-check text-success'></i>" : "<i class=\"fas fa-times text-danger\"></i>";
+                            var strCheck = item.IsActive ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
                             <tr id="trow_@item.Id">
-                                <th><input type="checkbox" class="cbkItem" value="@item.Id" /></th>
+                                <td><input type="checkbox" class="cbkItem" value="@item.Id" /></td>
                                 <td>@i</td>
                                 <td><img src="@item.Image" width="50" /></td>
                                 <td>@item.Title</td>
-                                <td class="text-center">
-                                    <a href="#" data-id="@item.Id" class="btnActive">@Html.Raw(strCheck)</a>
-                                </td>
                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">
+                                    <a href='#' data-id="@item.Id" class="btnActive">@Html.Raw(strCheck)</a>
+                                </td>
                                 <td>
                                     <a href="/admin/news/edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
-                                    <a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete">Xoa</a>
+                                    <a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete">Xóa</a>
                                 </td>
                             </tr>
                             i++;
@@ -106,20 +88,23 @@
                     else
                     {
                         <tr>
-                            <td colspan="4">Ko co ban ghi nao!</td>
+                            <td colspan="4">Không có bản ghi nào!!!</td>
                         </tr>
                     }
                 </tbody>
             </table>
+
             <div class="row">
                 <div class="col-6"></div>
-                <div class="col-6" style="text-align: right;">
+                <div class="col-6" style="text-align:right;">
                     @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
                 </div>
             </div>
+
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
+
         </div>
         <!-- /.card-footer-->
     </div>
@@ -179,6 +164,7 @@
                         success: function (rs) {
                             if (rs.success) {
                                 $('#trow_' + id).remove();
+                                location.reload();
                             }
                         }
                     })

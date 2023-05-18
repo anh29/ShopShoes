@@ -1,4 +1,6 @@
 ﻿@model PagedList.PagedList<ShopOnline.Models.EF.Order>
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
 @using PagedList.Mvc;
 @using PagedList;
 @{
@@ -14,7 +16,7 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/home" class="nav-link">Trang chu</a>
+            <a href="/admin/home" class="nav-link">Trang chủ</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
             <a href="/admin/order" class="nav-link">Danh sách đơn hàng</a>
@@ -31,12 +33,28 @@
             <h3 class="card-title">Danh sách đơn hàng</h3>
         </div>
         <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    @* search *@
+                    @using (Html.BeginForm("index", "Order", FormMethod.Get, new { }))
+                    {
+                        <div class="input-group pb-3">
+                            @Html.TextBox("Searchtext", null, new { @class = "form-control" })
+                            @*<input type="text" name="searchtext" class="form-control" />*@
+                            <span class="input-group-append">
+                                <button type="submit" class="btn btn-info btn-flat">Tìm kiếm</button>
+                            </span>
+                        </div>
+                    }
+                </div>
+            </div>
             <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th>STT</th>
                         <th>Mã đơn hàng</th>
-                        <th>Tên khách hàng</th>
+                        <th>Tài khoản</th>
+                        <th>Tên người nhận</th>
                         <th>Phone</th>
                         <th>Tiền</th>
                         <th>Trạng thái</th>
@@ -50,13 +68,15 @@
                         var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
                         foreach (var item in Model)
                         {
+
                             <tr>
                                 <td>@i</td>
                                 <td>@item.Code</td>
+                                <td>@item.UserId</td>
                                 <td>@item.CustomerName</td>
                                 <td>@item.Phone</td>
                                 <td>@ShopOnline.Common.Common.FormatNumber(item.TotalAmount, 0)</td>
-                                <td>@(item.TypePayment == 0 ? "Chờ thanh toán" : "Đã thanh toán")</td>
+                                <td>@(item.TypePayment == 1 ? "Chờ thanh toán" : "Đã thanh toán")</td>
                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                                 <td>
                                     <a href="/admin/order/detail/@item.Id" class="btn btn-sm btn-success">Xem</a>
@@ -94,7 +114,7 @@
             <div class="modal-header">
                 <h4 class="modal-title">Cập nhật trạng thái</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span> <!--ký tự nhân trong toán học.-->
+                    <span aria-hidden="true">x</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -122,8 +142,7 @@
                 $('#txtOrderId').val(id);
                 $('#modal-default').modal('show');
             });
-            function HandleClickUpdate(id)
-            {
+            function HandleClickUpdate(id) {
                 $('#txtOrderId').val(id);
                 $('#modal-default').modal('show');
             };

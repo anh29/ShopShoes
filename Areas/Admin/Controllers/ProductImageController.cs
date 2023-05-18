@@ -8,6 +8,7 @@ using ShopOnline.Models.EF;
 
 namespace ShopOnline.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ProductImageController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -30,25 +31,7 @@ namespace ShopOnline.Areas.Admin.Controllers
             db.SaveChanges();
             return Json(new { Success=true});
         }
-        [HttpPost]
-        public ActionResult DeleteAll(string ids)
-        {
-            if (!string.IsNullOrEmpty(ids))
-            {
-                var items = ids.Split(',');
-                if (items != null && items.Any())
-                {
-                    foreach (var item in items)
-                    {
-                        var obj = db.ProductImages.Find(Convert.ToInt32(item));
-                        db.ProductImages.Remove(obj);
-                        db.SaveChanges();
-                    }
-                }
-                return Json(new { success = true });
-            }
-            return Json(new { success = false });
-        }
+
         [HttpPost]
         public ActionResult Delete(int id)
         {
@@ -57,5 +40,23 @@ namespace ShopOnline.Areas.Admin.Controllers
             db.SaveChanges();
             return Json(new { success = true });
         }
+        [HttpPost]
+        public ActionResult SetDefault(int id, bool isDefault)
+        {
+            // Truy vấn cơ sở dữ liệu để lấy hình ảnh dựa trên id
+            var image = db.ProductImages.Find(id);
+
+            if (image != null)
+            {
+                // Cập nhật thuộc tính "isDefault" của hình ảnh
+                image.IsDefault = isDefault;
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false });
+        }
+
     }
 }

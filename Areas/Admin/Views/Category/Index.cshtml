@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<ShopOnline.Models.EF.Category>
 @{
-    ViewBag.Title = "Danh muc";
+    ViewBag.Title = "Danh mục";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,40 +11,23 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/home" class="nav-link">Trang chu</a>
+            <a href="/admin/home" class="nav-link">Trang chủ</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/category" class="nav-link">Danh muc</a>
+            <a href="/admin/category" class="nav-link">@ViewBag.Title</a>
         </li>
     </ul>
 }
-<!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Quan ly danh muc</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Danh muc</li>
-                </ol>
-            </div>
-        </div>
-    </div><!-- /.container-fluid -->
-</section>
-
 <!-- Main content -->
 <section class="content">
 
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Danh sach danh muc</h3>
+            <h3 class="card-title">Danh sách danh mục</h3>
 
             <div class="card-tools">
-                <a href="/admin/category/add" class="btn btn-primary">Them moi</a>
+                <a href="/admin/category/add" class="btn btn-primary">Thêm mới</a>
             </div>
         </div>
         <div class="card-body">
@@ -52,8 +35,8 @@
                 <thead>
                     <tr>
                         <th>STT</th>
-                        <th>Ten danh muc</th>
-                        <th>Thu tu</th>
+                        <th>Tên danh mục</th>
+                        <th>Thứ tự hiện</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -69,7 +52,7 @@
                                 <td>@item.Position</td>
                                 <td>
                                     <a href="/admin/category/edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
-                                    <a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete">Xoa</a>
+                                    <a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete">Xóa</a>
                                 </td>
                             </tr>
                             i++;
@@ -78,7 +61,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="4">Ko co ban ghi nao!</td>
+                            <td colspan="4">Không có bản ghi nào!</td>
                         </tr>
                     }
                 </tbody>
@@ -108,11 +91,12 @@
                         success: function (rs) {
                             if (rs.success) {
                                 $('#trow_' + id).remove();
+                                location.reload();
                             }
                         }
-                        })
+                    })
                 }
             });
         });
     </script>
-    }
+}

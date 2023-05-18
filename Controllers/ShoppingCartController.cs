@@ -1,7 +1,10 @@
-﻿using ShopOnline.Models;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
+using ShopOnline.Models;
 using ShopOnline.Models.EF;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -45,22 +48,44 @@ namespace ShopOnline.Controllers
                 if (cart != null && cart.Items.Any())
                 {
                     Order order = new Order();
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        var userId = User.Identity.Name;
+                        order.UserId = userId;
+                    }
+                    else
+                    {
+                        order.UserId = "No account";
+                    }
                     order.CustomerName = req.CustomerName;
                     order.Email = req.Email;
                     order.Phone = req.Phone;
                     order.Address = req.Address;
-                    cart.Items.ForEach(x => order.OrderDetails.Add(new OrderDetail
+                    cart.Items.ForEach(x =>
                     {
-                        ProductId = x.ProductId,
-                        Quantity = x.Quantity,
-                        Price = x.Price
-                    }));
+                        // Add order details
+                        order.OrderDetails.Add(new OrderDetail
+                        {
+                            ProductId = x.ProductId,
+                            Quantity = x.Quantity,
+                            Price = x.Price
+                        });
 
+                         //Reduce product quantity
+                        var product = db.Products.FirstOrDefault(p => p.Id == x.ProductId);
+                        if (product != null)
+                        {
+                            if (product.Quantity >= x.Quantity)
+                            {
+                                product.Quantity -= x.Quantity;
+                            }
+                        }
+                    }
+                    );
                     order.TotalAmount = cart.Items.Sum(x => (x.Price * x.Quantity));
                     order.TypePayment = req.TypePayment;
                     order.CreatedDate = DateTime.Now;
                     order.ModifiedDate = DateTime.Now;
-                    order.CreatedBy = req.Phone;
                     Random rd = new Random();
                     order.Code = "DH" + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9);
                     db.Orders.Add(order);
@@ -104,8 +129,22 @@ namespace ShopOnline.Controllers
         }
         public ActionResult Partial_CheckOut()
         {
-            return PartialView();
+            var model = new OrderViewModel();
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = User.Identity.GetUserId();
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                var user = userManager.FindById(userId);
+
+                model.CustomerName = user.FullName;
+                model.Phone = user.Phone;
+                model.Email = user.Email;
+            }
+
+            return PartialView(model);
         }
+
         public ActionResult Partial_Item_Cart()
         {
             ShoppingCart cart = (ShoppingCart)Session["Cart"];
