@@ -11,7 +11,7 @@ $(document).ready(function () {
         }
         //ajax: bất đồng bộ, cập nhật một phần của trang web mà không cần tải lại toàn bộ trang.
         $.ajax({
-            url: '/shoppingcart/addtocart',
+            url: '/cartmanager/addtocart',
             type: 'POST',
             data: { id: id, quantity: quantity },
             success: function (rs) {
@@ -38,7 +38,7 @@ $(document).ready(function () {
                 cf = true;
                 //ajax: bất đồng bộ, cập nhật một phần của trang web mà không cần tải lại toàn bộ trang.
                 $.ajax({
-                    url: '/shoppingcart/Delete',
+                    url: '/cartmanager/Delete',
                     type: 'POST',
                     data: { id: id },
                     async: true,
@@ -65,7 +65,7 @@ $(document).ready(function () {
 
 function ShowCount() {
     $.ajax({
-        url: '/shoppingcart/ShowCount',
+        url: '/cartmanager/ShowCount',
         type: 'GET',
         success: function (rs) {
             $('#checkout_items').html(rs.Count);
@@ -74,7 +74,7 @@ function ShowCount() {
 }
 function DeleteAll() {
     $.ajax({
-        url: '/shoppingcart/DeleteAll',
+        url: '/cartmanager/DeleteAll',
         type: 'POST',
         success: function (rs) {
             if (rs.Success) {
@@ -85,7 +85,7 @@ function DeleteAll() {
 }
 function Update(id, quantity) {
     $.ajax({
-        url: '/shoppingcart/Update',
+        url: '/cartmanager/Update',
         type: 'POST',
         data: { id: id, quantity: quantity },
         success: function (rs) {
@@ -97,7 +97,7 @@ function Update(id, quantity) {
 }
 function LoadCart() {
     $.ajax({
-        url: '/shoppingcart/Partial_Item_Cart',
+        url: '/cartmanager/Partial_Item_Cart',
         type: 'GET',
         success: function (rs) {
             $('#load_data').html(rs);

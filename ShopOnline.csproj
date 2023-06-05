@@ -34,7 +34,7 @@
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -205,7 +205,9 @@
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
-    <Compile Include="Controllers\ShoppingCartController.cs" />
+    <Compile Include="Controllers\CartManagerController.cs" />
+    <Compile Include="Data\DataAccessLayer.cs" />
+    <Compile Include="Domain\CartManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -217,6 +219,26 @@
     <Compile Include="Migrations\202305090131180_SetNullAlias.designer.cs">
       <DependentUpon>202305090131180_SetNullAlias.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202305190219388_add cart.cs" />
+    <Compile Include="Migrations\202305190219388_add cart.designer.cs">
+      <DependentUpon>202305190219388_add cart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305190257401_edit cart.cs" />
+    <Compile Include="Migrations\202305190257401_edit cart.designer.cs">
+      <DependentUpon>202305190257401_edit cart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305251439406_edit cart item.cs" />
+    <Compile Include="Migrations\202305251439406_edit cart item.designer.cs">
+      <DependentUpon>202305251439406_edit cart item.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305251611160_add db cart.cs" />
+    <Compile Include="Migrations\202305251611160_add db cart.designer.cs">
+      <DependentUpon>202305251611160_add db cart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306030702526_Edit-cart-1.cs" />
+    <Compile Include="Migrations\202306030702526_Edit-cart-1.designer.cs">
+      <DependentUpon>202306030702526_Edit-cart-1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CommonAbstract.cs" />
@@ -224,6 +246,8 @@
     <Compile Include="Models\Common\ThongKeTruyCap.cs" />
     <Compile Include="Models\CustomerViewModel.cs" />
     <Compile Include="Models\EF\Adv.cs" />
+    <Compile Include="Models\EF\Cart.cs" />
+    <Compile Include="Models\EF\CartItem.cs" />
     <Compile Include="Models\EF\Category.cs" />
     <Compile Include="Models\EF\Contact.cs" />
     <Compile Include="Models\EF\News.cs" />
@@ -240,7 +264,6 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="Models\SettingSystemViewModel.cs" />
-    <Compile Include="Models\ShoppingCart.cs" />
     <Compile Include="Models\ThongKeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -3425,12 +3448,12 @@
     <Content Include="Views\Menu\_MenuLeft.cshtml" />
     <Content Include="Views\Products\ProductCategory.cshtml" />
     <Content Include="Views\Products\Detail.cshtml" />
-    <Content Include="Views\ShoppingCart\Index.cshtml" />
-    <Content Include="Views\ShoppingCart\Partial_Item_Cart.cshtml" />
-    <Content Include="Views\ShoppingCart\CheckOut.cshtml" />
-    <Content Include="Views\ShoppingCart\Partial_Item_CheckOut.cshtml" />
-    <Content Include="Views\ShoppingCart\Partial_CheckOut.cshtml" />
-    <Content Include="Views\ShoppingCart\CheckOutSuccess.cshtml" />
+    <Content Include="Views\CartManager\Index.cshtml" />
+    <Content Include="Views\CartManager\Partial_Item_Cart.cshtml" />
+    <Content Include="Views\CartManager\CheckOut.cshtml" />
+    <Content Include="Views\CartManager\Partial_Item_CheckOut.cshtml" />
+    <Content Include="Views\CartManager\Partial_CheckOut.cshtml" />
+    <Content Include="Views\CartManager\CheckOutSuccess.cshtml" />
     <Content Include="Views\Home\Refresh.cshtml" />
     <Content Include="Views\News\Partial_News_Home.cshtml" />
     <Content Include="Views\Home\Partial_Subscribe.cshtml" />
@@ -3464,6 +3487,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202305090131180_SetNullAlias.resx">
       <DependentUpon>202305090131180_SetNullAlias.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305190219388_add cart.resx">
+      <DependentUpon>202305190219388_add cart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305190257401_edit cart.resx">
+      <DependentUpon>202305190257401_edit cart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305251439406_edit cart item.resx">
+      <DependentUpon>202305251439406_edit cart item.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305251611160_add db cart.resx">
+      <DependentUpon>202305251611160_add db cart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306030702526_Edit-cart-1.resx">
+      <DependentUpon>202306030702526_Edit-cart-1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

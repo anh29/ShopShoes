@@ -352,3 +352,8 @@ D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.csproj.CoreCompileInputs.cache
 D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.csproj.CopyComplete
 D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.dll
 D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.pdb
+D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.Migrations.addcart.resources
+D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.Migrations.editcart.resources
+D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.Migrations.editcartitem.resources
+D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.Migrations.adddbcart.resources
+D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.Migrations.Editcart1.resources

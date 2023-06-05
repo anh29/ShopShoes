@@ -1,5 +1,4 @@
-﻿@*@model ShopOnline.Models.RegisterViewModel*@
-@model ShopOnline.Models.CreateAccountViewModel
+﻿@model ShopOnline.Models.CreateAccountViewModel
 @{
     ViewBag.Title = "Register";
 }
@@ -26,6 +25,10 @@
                 <div class="form-group">
                     <label>Email</label>
                     @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @name = "Email" })
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ</label>
+                    @Html.TextBoxFor(x => x.Address, new { @class = "form-control", @name = "Address" })
                 </div>
                 <div class="form-group">
                     <label>Phone</label>

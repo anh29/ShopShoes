@@ -8,7 +8,9 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using ShopOnline.Data;
 using ShopOnline.Models;
+using ShopOnline.Models.EF;
 
 namespace ShopOnline.Controllers
 {
@@ -17,9 +19,11 @@ namespace ShopOnline.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private readonly DataAccessLayer _dataAccessLayer;
 
         public AccountController()
         {
+            _dataAccessLayer = new DataAccessLayer();
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -79,6 +83,7 @@ namespace ShopOnline.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    Session.Remove("Cart");
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -158,6 +163,7 @@ namespace ShopOnline.Controllers
                     UserName = model.UserName,
                     Email = model.Email,
                     FullName = model.FullName,
+                    Address = model.Address,
                     Phone = model.Phone
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
@@ -401,6 +407,7 @@ namespace ShopOnline.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            Session.Remove("Cart");
             return RedirectToAction("Index", "Home");
         }
 

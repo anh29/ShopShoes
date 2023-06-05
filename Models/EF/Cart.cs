@@ -10,16 +10,17 @@ namespace ShopOnline.Models.EF
     [Table("tb_Cart")]
     public class Cart
     {
-        [Required]
-        [StringLength(128)]
+        public Cart()
+        {
+            this.CartItems = new HashSet<CartItem>();
+        }
+
+        [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
         public string UserId { get; set; }
-        public int ProductId { get; set; }
-        public string ProductName { get; set; }
-        public string Alias { get; set; }
-        public string CategoryName { get; set; }
-        public string ProductImg { get; set; }
-        public int Quantity { get; set; }
-        public decimal Price { get; set; }
-        public decimal TotalPrice { get; set; }
+
+        public virtual ICollection<CartItem> CartItems { get; set; }
     }
 }
