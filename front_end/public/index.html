@@ -1,0 +1,144 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <meta
+        name="description"
+        content="Web site created using create-react-app"
+        />
+        <!--
+        manifest.json provides metadata used when your web app is installed on a
+        user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+        -->
+        <!--
+        Notice the use of %PUBLIC_URL% in the tags above.
+        It will be replaced with the URL of the `public` folder during the build.
+        Only files inside the `public` folder can be referenced from the HTML.
+
+        Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+        work correctly both with client-side routing and a non-root public URL.
+        Learn how to configure a non-root public URL by running `npm run build`.
+        -->
+        
+        <title>Bán Hàng</title>
+        <link rel="stylesheet" href="./assets/css/main.css">
+        <link rel="stylesheet" href="./assets/fontawesome-free-6.3.0-web/css/all.min.css">
+    </head>
+    <body>    
+        <div id="main">
+            <div class="heading">
+            <div id="nav">
+                <div class="ad">
+                    <a href="">Client
+                        <i class="three-bar fa-solid fa-bars"></i></a>
+                    <ul class="subnav">
+                        <li><a href="#" class="subnav_li"><i class="fa-solid fa-chart-simple"></i> Quản lí</a></li>
+                        <li><a href="#" class="subnav_li"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
+                        </li>
+                    </ul>                
+                </div>             
+                <div id="selectProduct"></div>
+            </div>
+        </div>
+            <div class="container">
+                <div id="box">
+                <div>
+                    <div id="client"></div>
+                    <select class="Loai">
+                        <option value="TrucTiep">Trực tiếp</option>
+                        <option value="DatHang">Đặt hàng</option>
+                    </select>
+                </div>              
+                <div class="find-customer">
+                    <!-- <input type="text" class="input" style="padding-left: 40px;" placeholder="Tìm khách hàng">
+                    <span href=""><i class="icon-Find2 fa-solid fa-magnifying-glass"></i></span> -->
+                        <div id="customer"></div>
+                        <button href="" class="js-icon-plus"><i class="icon-plus fa-solid fa-plus"></i></button>
+                </div>
+                <div id="cal">
+                    <div style="margin-top: 40px;">
+                        <label for="title">Tổng số lượng hàng</label>
+                        <input type="number" id="title" readonly value="0">
+                    </div>
+                    <div>
+                        <label for="">Tổng tiền hàng</label>
+                        <input type="number" id="title" readonly value="0">
+                    </div>
+                    <div>
+                        <label for="" class="TieuDe">Giảm giá</label>
+                        <input type="number" class="discount" value="0">
+                    </div>
+                    <div>
+                        <label for="" class="TieuDe">Thu khác</label>
+                        <input type="number" class="extra-pay" value="0">
+                    </div>
+                    <div>
+                        <label for="" class="TieuDe">Khách cần trả</label>
+                        <input type="number" id="title" readonly value="0">
+                    </div>
+                </div>
+                <div>
+                    <button class="pay">THANH TOÁN</button>
+                </div>
+                </div>     
+                <div class="listProduct">
+                    <div id="G1"></div>
+                    <div id="G2"></div>
+                    <div id="G3"></div>
+                </div>     
+                <div class="Note">
+                <input type="text" name="" id="" style="padding-left: 45px;" placeholder=" Ghi chú">
+                <i class="pen fa-solid fa-pen"></i>
+                </div>
+            </div>
+            <div class="footer">
+            <div class="Infor">
+                <i class="fa-solid fa-phone"></i>
+                0373115431
+                <i class="fa-solid fa-circle-question"></i>
+            </div>
+            </div>
+        </div>
+        <div class="modal">
+            <div class="modal-container">
+                <div class="modal-close">
+                    <a href="#" class="js-close-modal"><i class="icon-close fa-solid fa-xmark"></i></a>
+                </div>
+
+                <header class="modal-header">
+                    <i style="font-size: 26px; margin-right: 16px;" class="fa-solid fa-user"></i>
+                    Thêm khách hàng
+                </header>
+
+                <div class="modal-body">
+                    <div class="Infor-left">
+                        <label for="Name" class="modal-label">Tên khách hàng</label>
+                        <input type="text" id="Name" class="modal-input">
+
+                        <label for="birth" class="modal-label">Ngày sinh</label>
+                        <input type="text" id="birth" class="modal-input">
+
+                        <label for="gender" class="modal-label">Giới tính</label>
+                        <input type="text" id="gender" class="modal-input">
+                    </div>
+                    <div class="Infor-right">
+                        <label for="number" class="modal-label">Số điện thoại</label>
+                        <input type="text" id="number" class="modal-input">
+
+                        <label for="address" class="modal-label">Địa chỉ</label>
+                        <input type="text" id="address" class="modal-input">
+                    </div>
+                </div>
+                            
+                <div class="trans">
+                    <button id="OK"><i class="fa-solid fa-check"></i> OK</button>
+                    <button id="Cancel" class="js-close-modal"><i class="fa-solid fa-xmark"></i> CANCEL</button>
+                </div>
+            </div>
+        </div>
+        <script src="./assets/js/openAndCloseModal.js"></script>
+    </body>
+    </html>
