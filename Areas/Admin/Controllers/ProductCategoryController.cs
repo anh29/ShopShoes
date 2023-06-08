@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ShopOnline.Data;
 using ShopOnline.Models;
 using ShopOnline.Models.EF;
 
@@ -11,13 +12,14 @@ namespace ShopOnline.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class ProductCategoryController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly DataAccessLayer _dal = new DataAccessLayer();
         // GET: Admin/ProductCategory
         public ActionResult Index()
         {
-            var items = db.ProductCategories;
+            var items = _dal.GetAll<ProductCategory>();
             return View(items);
         }
+
 
         public ActionResult Add()
         {
@@ -33,15 +35,15 @@ namespace ShopOnline.Areas.Admin.Controllers
                 model.CreatedDate = DateTime.Now;
                 model.ModifiedDate = DateTime.Now;
                 model.Alias = ShopOnline.Models.Common.Filter.FilterChar(model.Title).Replace(".", "%");
-                db.ProductCategories.Add(model);
-                db.SaveChanges();
+                _dal.Add(model);
+                _dal.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View();
         }
         public ActionResult Edit(int id)
         {
-            var item = db.ProductCategories.Find(id);
+            var item = _dal.GetById<ProductCategory>(id);
             return View(item);
         }
 
@@ -52,9 +54,8 @@ namespace ShopOnline.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 model.ModifiedDate = DateTime.Now;
-                db.ProductCategories.Attach(model);
-                db.Entry(model).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
+                _dal.Update(model);
+                _dal.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View();
@@ -63,16 +64,16 @@ namespace ShopOnline.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var item = db.ProductCategories.Find(id);
+            var item = _dal.GetById<ProductCategory>(id);
             if (item != null)
             {
-                db.ProductCategories.Remove(item);
-                db.SaveChanges();
+                _dal.Delete(item);
+                _dal.SaveChanges();
                 return Json(new { success = true });
             }
             return Json(new { success = false });
-
         }
+
 
         [HttpPost]
         public ActionResult DeleteAll(string ids)
@@ -82,16 +83,14 @@ namespace ShopOnline.Areas.Admin.Controllers
                 var items = ids.Split(',');
                 if (items != null && items.Any())
                 {
-                    foreach (var item in items)
-                    {
-                        var obj = db.ProductCategories.Find(Convert.ToInt32(item));
-                        db.ProductCategories.Remove(obj);
-                        db.SaveChanges();
-                    }
+                    var entities = items.Select(item => _dal.GetById<ProductCategory>(Convert.ToInt32(item))).ToList();
+                    _dal.DeleteAll(entities);
+                    _dal.SaveChanges();
                 }
                 return Json(new { success = true });
             }
             return Json(new { success = false });
         }
+
     }
 }

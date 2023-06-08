@@ -1,4 +1,5 @@
-﻿using ShopOnline.Models;
+﻿using ShopOnline.Data;
+using ShopOnline.Models;
 using ShopOnline.Models.EF;
 using System;
 using System.Collections.Generic;
@@ -11,13 +12,14 @@ namespace ShopOnline.Areas.Admin.Controllers
     [Authorize(Roles = "Admin, Employee")]
     public class PostsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly DataAccessLayer _dal = new DataAccessLayer();
         // GET: Admin/Posts
         public ActionResult Index()
         {
-            var items = db.Posts.ToList();
+            var items = _dal.GetAll<Post>();
             return View(items);
         }
+
         public ActionResult Add()
         {
             return View();
@@ -33,15 +35,15 @@ namespace ShopOnline.Areas.Admin.Controllers
                 model.CategoryId = 4;
                 model.ModifiedDate = DateTime.Now;
                 model.Alias = ShopOnline.Models.Common.Filter.FilterChar(model.Title).Replace(".", "%");
-                db.Posts.Add(model);
-                db.SaveChanges();
+                _dal.Add(model);
+                _dal.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(model);
         }
         public ActionResult Edit(int id)
         {
-            var item = db.Posts.Find(id);
+            var item = _dal.GetById<Post>(id);
             return View(item);
         }
 
@@ -52,9 +54,8 @@ namespace ShopOnline.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 model.ModifiedDate = DateTime.Now;
-                db.Posts.Attach(model);
-                db.Entry(model).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
+                _dal.Update(model);
+                _dal.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(model);
@@ -63,30 +64,30 @@ namespace ShopOnline.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var item = db.Posts.Find(id);
+            var item = _dal.GetById<Post>(id);
             if (item != null)
             {
-                db.Posts.Remove(item);
-                db.SaveChanges();
+                _dal.Delete(item);
+                _dal.SaveChanges();
                 return Json(new { success = true });
             }
             return Json(new { success = false });
-
         }
 
         [HttpPost]
         public ActionResult IsActive(int id)
         {
-            var item = db.Posts.Find(id);
+            var item = _dal.GetById<Post>(id);
             if (item != null)
             {
                 item.IsActive = !item.IsActive;
-                db.Entry(item).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
+                _dal.Update(item);
+                _dal.SaveChanges();
                 return Json(new { success = true, isActive = item.IsActive });
             }
             return Json(new { success = false });
         }
+
 
         [HttpPost]
         public ActionResult DeleteAll(string ids)
@@ -96,12 +97,9 @@ namespace ShopOnline.Areas.Admin.Controllers
                 var items = ids.Split(',');
                 if (items != null && items.Any())
                 {
-                    foreach (var item in items)
-                    {
-                        var obj = db.Posts.Find(Convert.ToInt32(item));
-                        db.Posts.Remove(obj);
-                        db.SaveChanges();
-                    }
+                    var entities = items.Select(item => _dal.GetById<Post>(Convert.ToInt32(item))).ToList();
+                    _dal.DeleteAll(entities);
+                    _dal.SaveChanges();
                 }
                 return Json(new { success = true });
             }

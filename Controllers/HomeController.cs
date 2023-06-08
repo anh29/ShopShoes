@@ -1,4 +1,5 @@
-﻿using ShopOnline.Models;
+﻿using ShopOnline.Data;
+using ShopOnline.Models;
 using ShopOnline.Models.EF;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,8 @@ namespace ShopOnline.Controllers
 {
     public class HomeController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly DataAccessLayer _dal = new DataAccessLayer();
+
         public ActionResult Index()
         {
             return View();
@@ -26,18 +28,20 @@ namespace ShopOnline.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Subscribes.Add(new Subscribe { Email = req.Email, CreatedDate = DateTime.Now});
-                db.SaveChanges();
-                return Json(new {Success = true});
+                _dal.Add(req);
+                _dal.SaveChanges();
+                return Json(new { Success = true });
             }
             return View("Partial_Subscribe", req);
         }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
 
             return View();
         }
+
         public ActionResult Refresh()
         {
             var item = new ThongKeModel();

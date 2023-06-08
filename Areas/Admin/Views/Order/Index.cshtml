@@ -76,11 +76,10 @@
                                 <td>@item.CustomerName</td>
                                 <td>@item.Phone</td>
                                 <td>@ShopOnline.Common.Common.FormatNumber(item.TotalAmount, 0)</td>
-                                <td>@(item.TypePayment == 1 ? "Chờ thanh toán" : "Đã thanh toán")</td>
+                                <td>@(item.State == 1 ? "Chờ thanh toán" : (item.State == 2 ? "Đã thanh toán" : "Đang giao hàng"))</td>
                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                                 <td>
                                     <a href="/admin/order/detail/@item.Id" class="btn btn-sm btn-success">Xem</a>
-                                    @*<a href="#" class="btn btn-sm btn-danger btnUpdate" data-id="@item.Id">Cập nhật</a>*@
                                     <a href="#" class="btn btn-sm btn-danger btnUpdate" data-id="@item.Id" onclick="HandleClickUpdate('@item.Id')">Cập nhật</a>
                                 </td>
                             </tr>
@@ -122,6 +121,7 @@
                 <div class="form-group">
                     <label>Trạng thái</label>
                     <select class="form-control" id="ddStatus">
+                        <option value="3">Đang giao hàng</option>
                         <option value="2">Đã thanh toán</option>
                     </select>
                 </div>

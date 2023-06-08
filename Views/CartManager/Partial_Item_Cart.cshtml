@@ -1,8 +1,10 @@
 ﻿@model IEnumerable<ShopOnline.Models.EF.CartItem>
 @using ShopOnline.Common
 
+<link href="~/Content/assets/styles/table_product.css" rel="stylesheet" />
+
 <table class="table">
-    <tr class="text-center">
+    <tr>
         <th>STT</th>
         <th>Ảnh sản phẩm</th>
         <th>Tên sản phẩm</th>
@@ -19,18 +21,31 @@
         foreach (var item in Model)
         {
             total += item.TotalPrice;
-            <tr class="text-center" id="trow_@item.ProductId">
-                <td>@(i)</td>
-                <td><img src="@item.Product.Image" width="60" /></td>
+            var strImg = "";
+            var CheckImage = item.Product.ProductImage.FirstOrDefault(x => x.IsDefault);
+            if (CheckImage != null)
+            {
+                strImg = CheckImage.Image;
+            }
+            <tr id="trow_@item.ProductId">
+                <td>@i</td>
+                <td><img src="@strImg" width="60" /></td>
                 <td class="text-left">
                     <a href="/chi-tiet/@item.Product.Alias-@(item.ProductId)">
-                        @item.Product.Alias
+                        @item.Product.Title
                     </a>
                 </td>
-                <td>@item.Product.ProductCategory.Alias</td>
-                <td>@Common.FormatNumber(item.Product.Alias, 0)</td>
+                <td>@item.Product.ProductCategory.Title</td>
+                @if (item.Product.PriceSale > 0)
+                {
+                    <td class="text-right">@Common.FormatNumber(item.Product.PriceSale, 0)</td>
+                }
+                else
+                {
+                    <td class="text-right">@Common.FormatNumber(item.Product.Price, 0)</td>
+                }
                 <td><input type="number" id="Quantity_@item.ProductId" value="@item.Quantity" min="1" class="form-control" /></td>
-                <th style="text-align: right;">@Common.FormatNumber(item.TotalPrice, 2)</th>
+                <th class="text-right">@Common.FormatNumber(item.TotalPrice, 0)</th>
                 <td>
                     @* data-id: lưu trữ một giá trị định danh (ID) cho một phần tử HTML. -> JS để truy cập giá trị "data-id" *@
                     <a href="#" data-id="@item.ProductId" class="btn btn-sm btn-danger btnDelete">Xóa</a>
@@ -40,14 +55,14 @@
             i++;
         }
         <tr>
-            <th colspan="6" class="text-right">Tổng: </th>
-            <th class="text-center">@Common.FormatNumber(total, 0)</th>
+            <th colspan="6">Tổng: </th>
+            <th class="text-right">@Common.FormatNumber(total, 0)</th>
             <th></th>
         </tr>
         <tr>
-            <th colspan="6" class="text-right"></th>
+            <th colspan="6"></th>
             <th></th>
-            <th class="text-center">
+            <th>
                 <a href="#" class="btn btn-danger btnDeleteAll">Xóa</a>
                 <a href="/thanh-toan" class="btn btn-success">Thanh toán</a>
             </th>
@@ -56,7 +71,10 @@
     else
     {
         <tr>
-            <th colspan="7">Không có sản phẩm trong giỏ hàng.</th>
+            <th colspan="8">
+                <h3>Không có sản phẩm trong giỏ hàng.</h3>
+                <h4>Hãy thêm <a href="/san-pham">sản phẩm</a>.</h4>
+            </th>
         </tr>
     }
 </table>

@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using ShopOnline.Models;
 using ShopOnline.Models.EF;
+using YourProject.Common;
 
 namespace ShopOnline.Areas.Admin.Controllers
 {
@@ -18,16 +19,16 @@ namespace ShopOnline.Areas.Admin.Controllers
         {
             IEnumerable<Product> items = db.Products.OrderByDescending(x => x.Id);
             var pageSize = 5;
-            if (page == null)
-            {
-                page = 1;
-            }
-            var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-            items = items.ToPagedList(pageIndex, pageSize);
+
+            var pageNumber = page ?? 1;
+            var pagedItems = PageHelper.GetPagedList(items, pageNumber, pageSize);
+
             ViewBag.PageSize = pageSize;
-            ViewBag.Page = page;
-            return View(items);
+            ViewBag.Page = pageNumber;
+
+            return View(pagedItems);
         }
+
 
         public ActionResult Add()
         {
@@ -47,7 +48,6 @@ namespace ShopOnline.Areas.Admin.Controllers
                     {
                         if (i + 1 == rDefault[0])
                         {
-                            model.Image = Images[i];
                             model.ProductImage.Add(new ProductImage
                             {
                                 ProductId = model.Id,

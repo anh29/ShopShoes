@@ -132,7 +132,7 @@ namespace ShopOnline.Areas.Admin.Controllers
                     UserName = model.UserName, 
                     Email = model.Email, 
                     FullName = model.FullName,
-                    Phone = model.Phone
+                    PhoneNumber = model.Phone
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

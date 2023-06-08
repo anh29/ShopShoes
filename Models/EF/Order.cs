@@ -17,7 +17,7 @@ namespace ShopOnline.Models.EF
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
+        [Required] 
         public string Code { get; set; }
         [Required(ErrorMessage = "Tên khách hàng không để trống")]
         public string CustomerName { get; set; }
@@ -28,7 +28,8 @@ namespace ShopOnline.Models.EF
         public string Email { get; set; }
         public decimal TotalAmount { get; set; }
         public int Quantity { get; set; }
-        public int TypePayment { get; set; }
+        public int State { get; set; }
+        public string Note { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

@@ -77,7 +77,7 @@ namespace ShopOnline.Models
         public string Phone { get; set; }
         public string Address { get; set; }
         public string Role { get; set; }
-
+        public double accumulatedPoints { get; set; }
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]

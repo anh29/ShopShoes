@@ -1,24 +1,40 @@
 ﻿@model IEnumerable<ShopOnline.Models.EF.CartItem>
 @using ShopOnline.Common
 
+<link href="~/Content/assets/styles/table_product.css" rel="stylesheet" />
 @if (Model != null && Model.Any())
 {
     <h3 style="padding: 5px 25px 0;">Giỏ hàng <span style="float:right;"><small>@Model.Count()</small></span></h3>
-    var i = 0;
     var total = decimal.Zero;
 
     <table class="table">
+        <tr>
+            <td>Tên sản phẩm</td>
+            <td>Giá</td>
+            <td>Số lượng</td>
+            <td>Thành tiền</td>
+        </tr>
+        
         @foreach (var item in Model)
         {
             total += item.TotalPrice;
             <tr>
-                <td>@item.Product.Alias</td>
-                <td>@Common.FormatNumber(item.Product.Price, 0)</td>
+                <td>@item.Product.Title</td>
+                @if (item.Product.PriceSale > 0)
+                {
+                    <td class="text-right">@Common.FormatNumber(item.Product.PriceSale, 0)</td>
+                }
+                else
+                {
+                    <td class="text-right">@Common.FormatNumber(item.Product.Price, 0)</td>
+                }
+                <td class="text-right">@item.Quantity</td>
+                <td class="text-right">@Common.FormatNumber(item.TotalPrice, 0)</td>
             </tr>
         }
         <tr>
-            <td>Tổng tiền</td>
-            <td>@Common.FormatNumber(total, 0)</td>
+            <td colspan="3">Tổng tiền</td>
+            <td class="text-right">@Common.FormatNumber(total, 0)</td>
         </tr>
     </table>
 }

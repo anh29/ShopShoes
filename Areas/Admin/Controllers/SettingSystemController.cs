@@ -1,4 +1,5 @@
-﻿using ShopOnline.Models;
+﻿using ShopOnline.Data;
+using ShopOnline.Models;
 using ShopOnline.Models.EF;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,14 @@ namespace ShopOnline.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class SettingSystemController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly DataAccessLayer _dal = new DataAccessLayer();
+
         // GET: Admin/SettingSystem
         public ActionResult Index()
         {
             return View();
         }
+
         public ActionResult Partial_Setting()
         {
             return PartialView();
@@ -26,112 +29,112 @@ namespace ShopOnline.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult AddSetting(SettingSystemViewModel req)
         {
-            SystemSetting set = null;
-            //title
-            var checkTitle = db.SystemSettings.FirstOrDefault(x => x.SettingKey.Contains("SettingTitle"));
+            // title
+            var checkTitle = _dal.GetFiltered<SystemSetting>(x => x.SettingKey.Contains("SettingTitle")).FirstOrDefault();
             if (checkTitle == null)
             {
-                set = new SystemSetting();
+                var set = new SystemSetting();
                 set.SettingKey = "SettingTitle";
                 set.SettingValue = req.SettingTitle;
-                db.SystemSettings.Add(set);
+                _dal.Add(set);
             }
             else
             {
                 checkTitle.SettingValue = req.SettingTitle;
-                db.Entry(checkTitle).State = System.Data.Entity.EntityState.Modified;
+                _dal.Update(checkTitle);
             }
 
             // logo
-            var checkLogo = db.SystemSettings.FirstOrDefault(x => x.SettingKey.Contains("SettingLogo"));
+            var checkLogo = _dal.GetFiltered<SystemSetting>(x => x.SettingKey.Contains("SettingLogo")).FirstOrDefault();
             if (checkLogo == null)
             {
-                set = new SystemSetting();
+                var set = new SystemSetting();
                 set.SettingKey = "SettingLogo";
                 set.SettingValue = req.SettingLogo;
-                db.SystemSettings.Add(set);
+                _dal.Add(set);
             }
             else
             {
                 checkLogo.SettingValue = req.SettingLogo;
-                db.Entry(checkLogo).State = System.Data.Entity.EntityState.Modified;
+                _dal.Update(checkLogo);
             }
 
             // email
-            var checkEmail = db.SystemSettings.FirstOrDefault(x => x.SettingKey.Contains("SettingEmail"));
+            var checkEmail = _dal.GetFiltered<SystemSetting>(x => x.SettingKey.Contains("SettingEmail")).FirstOrDefault();
             if (checkEmail == null)
             {
-                set = new SystemSetting();
+                var set = new SystemSetting();
                 set.SettingKey = "SettingEmail";
                 set.SettingValue = req.SettingEmail;
-                db.SystemSettings.Add(set);
+                _dal.Add(set);
             }
             else
             {
                 checkEmail.SettingValue = req.SettingEmail;
-                db.Entry(checkEmail).State = System.Data.Entity.EntityState.Modified;
+                _dal.Update(checkEmail);
             }
 
             // hotline
-            var checkHotline = db.SystemSettings.FirstOrDefault(x => x.SettingKey.Contains("SettingHotline"));
+            var checkHotline = _dal.GetFiltered<SystemSetting>(x => x.SettingKey.Contains("SettingHotline")).FirstOrDefault();
             if (checkHotline == null)
             {
-                set = new SystemSetting();
+                var set = new SystemSetting();
                 set.SettingKey = "SettingHotline";
                 set.SettingValue = req.SettingHotline;
-                db.SystemSettings.Add(set);
+                _dal.Add(set);
             }
             else
             {
                 checkHotline.SettingValue = req.SettingHotline;
-                db.Entry(checkHotline).State = System.Data.Entity.EntityState.Modified;
+                _dal.Update(checkHotline);
             }
 
             // title seo
-            var checkTitleSeo = db.SystemSettings.FirstOrDefault(x => x.SettingKey.Contains("SettingTitleSeo"));
+            var checkTitleSeo = _dal.GetFiltered<SystemSetting>(x => x.SettingKey.Contains("SettingTitleSeo")).FirstOrDefault();
             if (checkTitleSeo == null)
             {
-                set = new SystemSetting();
+                var set = new SystemSetting();
                 set.SettingKey = "SettingTitleSeo";
                 set.SettingValue = req.SettingTitleSeo;
-                db.SystemSettings.Add(set);
+                _dal.Add(set);
             }
             else
             {
                 checkTitleSeo.SettingValue = req.SettingTitleSeo;
-                db.Entry(checkTitleSeo).State = System.Data.Entity.EntityState.Modified;
+                _dal.Update(checkTitleSeo);
             }
 
             // des seo
-            var checkDesSeo = db.SystemSettings.FirstOrDefault(x => x.SettingKey.Contains("SettingDesSeo"));
+            var checkDesSeo = _dal.GetFiltered<SystemSetting>(x => x.SettingKey.Contains("SettingDesSeo")).FirstOrDefault();
             if (checkDesSeo == null)
             {
-                set = new SystemSetting();
+                var set = new SystemSetting();
                 set.SettingKey = "SettingDesSeo";
                 set.SettingValue = req.SettingDesSeo;
-                db.SystemSettings.Add(set);
+                _dal.Add(set);
             }
             else
             {
                 checkDesSeo.SettingValue = req.SettingDesSeo;
-                db.Entry(checkDesSeo).State = System.Data.Entity.EntityState.Modified;
+                _dal.Update(checkDesSeo);
             }
 
             // key seo
-            var checkKeySeo = db.SystemSettings.FirstOrDefault(x => x.SettingKey.Contains("SettingKeySeo"));
+            var checkKeySeo = _dal.GetFiltered<SystemSetting>(x => x.SettingKey.Contains("SettingKeySeo")).FirstOrDefault();
             if (checkKeySeo == null)
             {
-                set = new SystemSetting();
+                var set = new SystemSetting();
                 set.SettingKey = "SettingKeySeo";
                 set.SettingValue = req.SettingKeySeo;
-                db.SystemSettings.Add(set);
+                _dal.Add(set);
             }
             else
             {
                 checkKeySeo.SettingValue = req.SettingKeySeo;
-                db.Entry(checkKeySeo).State = System.Data.Entity.EntityState.Modified;
+                _dal.Update(checkKeySeo);
             }
-            db.SaveChanges();
+
+            _dal.SaveChanges();
             return View("Index");
         }
     }

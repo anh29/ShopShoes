@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ShopOnline.Data;
 using ShopOnline.Models;
 using ShopOnline.Models.EF;
 
@@ -11,52 +12,52 @@ namespace ShopOnline.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class ProductImageController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly DataAccessLayer _dal = new DataAccessLayer();
         // GET: Admin/ProductImage
         public ActionResult Index(int id)
         {
             ViewBag.ProductId = id;
-            var items = db.ProductImages.Where(x => x.ProductId == id).ToList();
+            var items = _dal.GetFiltered<ProductImage>(x => x.ProductId == id);
             return View(items);
         }
 
         [HttpPost]
-        public ActionResult AddImage(int productId,string url)
+        public ActionResult AddImage(int productId, string url)
         {
-            db.ProductImages.Add(new ProductImage { 
-                ProductId=productId,
-                Image=url,
-                IsDefault=false
+            _dal.Add(new ProductImage
+            {
+                ProductId = productId,
+                Image = url,
+                IsDefault = false
             });
-            db.SaveChanges();
-            return Json(new { Success=true});
+            _dal.SaveChanges();
+            return Json(new { Success = true });
         }
 
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var item = db.ProductImages.Find(id);
-            db.ProductImages.Remove(item);
-            db.SaveChanges();
+            var item = _dal.GetById<ProductImage>(id);
+            _dal.Delete(item);
+            _dal.SaveChanges();
             return Json(new { success = true });
         }
+
         [HttpPost]
         public ActionResult SetDefault(int id, bool isDefault)
         {
-            // Truy vấn cơ sở dữ liệu để lấy hình ảnh dựa trên id
-            var image = db.ProductImages.Find(id);
+            var image = _dal.GetById<ProductImage>(id);
 
             if (image != null)
             {
-                // Cập nhật thuộc tính "isDefault" của hình ảnh
                 image.IsDefault = isDefault;
-                db.SaveChanges();
+                _dal.Update(image);
+                _dal.SaveChanges();
 
                 return Json(new { success = true });
             }
 
             return Json(new { success = false });
         }
-
     }
 }

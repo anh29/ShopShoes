@@ -164,7 +164,7 @@ namespace ShopOnline.Controllers
                     Email = model.Email,
                     FullName = model.FullName,
                     Address = model.Address,
-                    Phone = model.Phone
+                    PhoneNumber = model.Phone
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

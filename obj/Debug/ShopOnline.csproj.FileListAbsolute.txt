@@ -357,3 +357,7 @@ D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.Migrations.editcart.resources
 D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.Migrations.editcartitem.resources
 D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.Migrations.adddbcart.resources
 D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.Migrations.Editcart1.resources
+D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.Migrations.deleteunuseproperty.resources
+D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.Migrations.updateorderwithnote.resources
+D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.Migrations.addaccumulatedPointsforuser.resources
+D:\C#\PBL3\ShopShoes\obj\Debug\ShopOnline.Migrations.changeaccumulatedPointsforuser.resources

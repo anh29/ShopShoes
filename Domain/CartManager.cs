@@ -19,7 +19,7 @@ namespace ShopOnline.Domain
             if (checkExits != null)
             {
                 checkExits.Quantity += Quantity;
-                checkExits.TotalPrice = checkExits.Product.Price * checkExits.Quantity;
+                checkExits.TotalPrice = checkExits.Quantity * (checkExits.Product.PriceSale > 0 ? (decimal)checkExits.Product.PriceSale : checkExits.Product.Price);
             }
             else
             {
@@ -39,8 +39,8 @@ namespace ShopOnline.Domain
             var checkExits = Items.SingleOrDefault(x => x.ProductId == id);
             if (checkExits != null)
             {
-                checkExits.Quantity = quantity;
-                checkExits.TotalPrice = checkExits.Product.Price * checkExits.Quantity;
+                checkExits.Quantity = quantity; 
+                checkExits.TotalPrice = checkExits.Quantity * (checkExits.Product.PriceSale > 0 ? (decimal)checkExits.Product.PriceSale : checkExits.Product.Price);
             }
         }
         public decimal GetTotalPrice()

@@ -196,6 +196,7 @@
     <Compile Include="Areas\Admin\Controllers\SettingSystemController.cs" />
     <Compile Include="Areas\Admin\Controllers\StatisticalController.cs" />
     <Compile Include="Common\Common.cs" />
+    <Compile Include="Common\PageHelper.cs" />
     <Compile Include="Common\SettingHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
@@ -238,6 +239,22 @@
     <Compile Include="Migrations\202306030702526_Edit-cart-1.cs" />
     <Compile Include="Migrations\202306030702526_Edit-cart-1.designer.cs">
       <DependentUpon>202306030702526_Edit-cart-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306070542408_delete unuse property.cs" />
+    <Compile Include="Migrations\202306070542408_delete unuse property.designer.cs">
+      <DependentUpon>202306070542408_delete unuse property.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306070910014_update order with note.cs" />
+    <Compile Include="Migrations\202306070910014_update order with note.designer.cs">
+      <DependentUpon>202306070910014_update order with note.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306080330326_add accumulatedPoints for user.cs" />
+    <Compile Include="Migrations\202306080330326_add accumulatedPoints for user.designer.cs">
+      <DependentUpon>202306080330326_add accumulatedPoints for user.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306080709319_change accumulatedPoints for user.cs" />
+    <Compile Include="Migrations\202306080709319_change accumulatedPoints for user.designer.cs">
+      <DependentUpon>202306080709319_change accumulatedPoints for user.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -471,6 +488,7 @@
     <Content Include="Content\assets\styles\responsive.css" />
     <Content Include="Content\assets\styles\single_responsive.css" />
     <Content Include="Content\assets\styles\single_styles.css" />
+    <Content Include="Content\assets\styles\table_product.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -3502,6 +3520,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306030702526_Edit-cart-1.resx">
       <DependentUpon>202306030702526_Edit-cart-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306070542408_delete unuse property.resx">
+      <DependentUpon>202306070542408_delete unuse property.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306070910014_update order with note.resx">
+      <DependentUpon>202306070910014_update order with note.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306080330326_add accumulatedPoints for user.resx">
+      <DependentUpon>202306080330326_add accumulatedPoints for user.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306080709319_change accumulatedPoints for user.resx">
+      <DependentUpon>202306080709319_change accumulatedPoints for user.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
