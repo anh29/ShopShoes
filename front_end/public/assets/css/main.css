@@ -3,17 +3,17 @@
     margin: 0;
     box-sizing: border-box;
     font-size: 15px;
-	font-family: 'Roboto', sans-serif;
+	font-family: 'Arial', sans-serif;
 }
 
 body {
-    background-color: #ecf5fa;
+    background-color: #c7d7e8;
 }
 
 .heading{
     position: relative;
     height: 60px;
-    background-color: #6096B4;
+    background-color: #45607e;
     max-width: 100%;    
     right: 0;
     left: 0;
@@ -22,6 +22,12 @@ body {
 input:focus {
     outline: 0;
 }
+
+/* input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+} */
 .heading .find-product {
     top: 10px;
     left: 10px;
@@ -32,6 +38,7 @@ input:focus {
 }
 
 .find-product input{
+    width: 100%;
     border: 0;
     outline: 0;
     background: transparent;
@@ -49,10 +56,17 @@ input:focus {
 #box .find-client .result-box-client,
 #box .find-customer .result-box-customer,
 .find-product .result-box {
-    max-height: 300px;
     overflow-y: scroll;
 }
 
+.find-product .result-box {
+    max-height: 300px;
+}
+
+#box .find-client .result-box-client,
+#box .find-customer .result-box-customer{
+    max-height: 170px;
+}
 #box .find-client .result-box-client ul,
 #box .find-customer .result-box-customer ul,
 .find-product .result-box {
@@ -80,7 +94,7 @@ input:focus {
 #box .find-client .result-box-client ul li:hover,
 #box .find-customer .result-box-customer ul li:hover,
 .find-product .result-box li:hover {
-    background-color: #ecf5fa;
+    background-color: #bee1f4;
 }
 
 .heading .icon-Find1{
@@ -152,7 +166,7 @@ input:focus {
     width: 35%;
     height: 80%;
     background-color: white;
-    box-shadow: 0 5px 5px #93BFCF;
+    /* box-shadow: 0 5px 5px #93BFCF; */
     border-radius: 15px;
     position: absolute;
     right: 0;
@@ -211,6 +225,7 @@ input:focus {
     max-width: 100%;
     background-color: #ecf5fa;
     z-index: 1;
+    color: #0071ae;
 }
 
 #box .find-client .icon-find-client,
@@ -242,18 +257,28 @@ input:focus {
     font-size: 18px;
     border: 0;
     outline: 0;
-    max-width: 100px;
+    max-width: 130px;
+    letter-spacing: 0.05em;
 }
+
+#listProduct{
+    max-height: 70%;   
+    max-width: 63%;
+    width: 100%;
+    overflow: auto;
+    overflow-y: hidden;
+}
+
 
 .box-product{
     background-color: #ffffff;
     position: relative;
     max-width: 100%;
-    width: 62%;
+    width: 97%;
     padding: 20px;
     margin: 15px;
     border-radius: 10px;
-    box-shadow: 0 5px 5px #93BFCF;
+    /* box-shadow: 0 5px 5px #93BFCF; */
     justify-content: center;  
     display: flex;
     align-items: center; 
@@ -290,12 +315,14 @@ input:focus {
     border-radius: 100px;
     border: 0;
     background-color: #e3f5fc;
-    text-align: left;
+    text-align: left; 
 }
 
 .box-product .Price{
     position:absolute;
     left: 80%;
+    border: 0;
+    max-width: 100px;
 }
 
 .box-product .Delete{
@@ -306,18 +333,18 @@ input:focus {
 }
 
 #box .pay {
-    margin-top: 170px;
+    margin-top: 38%;
     width: 100%;
     height: 50px;
     text-align: center;
-    background-color: #6096B4;
+    background-color: #45607e;
     color: #fff;
     border: 0;
-    border-radius: 20px;
+    border-radius: 12px;
     cursor: pointer;
 }
 
-.Note {
+.noteBox {
     position: absolute;
     bottom: 65px;
     max-width: 100%;
@@ -325,19 +352,19 @@ input:focus {
     padding-left: 5px;
 }
 
-.Note input {
+.noteBox input {
     margin-left: 10px;
     margin-bottom: 10px;
     height: 60px;
     width: 100%;
     border: 0;
     border-radius: 10px;
-    box-shadow: 0 5px 5px #93BFCF;
+    /* box-shadow: 0 5px 5px #93BFCF; */
 }
 
 
 
-.Note .pen{
+.noteBox .pen{
     position: absolute;
     left: 30px;
     top: 22px;
@@ -353,7 +380,7 @@ input:focus {
     left: 0;
     bottom: 0;
     background-color: #fff;
-    box-shadow: 0 5px 10px #93BFCF;
+    /* box-shadow: 0 5px 10px #93BFCF; */
 }
 
 .footer .Infor {
@@ -478,5 +505,115 @@ input:focus {
     to{
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+.close {
+    display: none;
+    background-color: rgba(0,0,0,0);
+}
+.closeProduct {
+    display: none;
+}
+#printed_bill {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.4);
+    z-index: 9999;
+}
+
+.printed_bill{
+    position: fixed;
+    animation: modalFadeIn ease 0.3s;
+    background-color: #fff;
+    overflow-y: scroll;
+    padding: 20px;
+    left: 32%;    
+    top: 10%;
+}
+
+.bill {    
+    max-width: 320px;
+}
+.bill input{
+    border: 0;   
+    max-width: 140px;
+}
+
+.bill label{
+    font-weight: bold;
+    display: inline-block;
+}
+
+.bill .shopName{
+    text-align: center;
+    padding: 10px;
+    text-transform: uppercase;
+}
+
+.bill .billName{
+    display: block;
+    margin-left: 30%;
+    font-weight: 700;
+    padding: 10px;
+    text-transform: uppercase;
+}
+
+.bill .infor-product th {
+    padding-left: 10px;
+    text-align: right;
+}
+
+.bill .infor-product td {
+    text-align: right;
+}
+
+.bill .footer-bill {
+    padding: 20px;
+    text-align: center;
+}
+.printed_bill .nav {
+    margin-left: 47%;
+}
+.printed_bill .nav button{
+    border: 0;
+    padding: 10px;
+    margin-left: 10%;
+    cursor: pointer;
+}
+
+.warningBox {
+    opacity: 0;
+    font-size: 20px;
+    background-color: rgb(255, 94, 94);
+    width: 200px;
+    height: 100px;
+    position: absolute;
+    /* left: 46%;
+    margin-top: 25%; */
+    right: 2%;
+    margin-top: 30%;
+    animation: fade-in 4s forwards;
+    border-radius: 4px;
+    color: #fff;
+    display: none;
+    text-align: center; 
+    align-items: center;
+    justify-content: center;
+    padding: 10px ;
+    z-index: 10;
+}
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
+    }   
+    100% {
+        opacity: 0;
     }
 }

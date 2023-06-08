@@ -11,3 +11,4 @@ btn.addEventListener('click', showAddClient);
 for(const close of btnClose) {
     close.addEventListener('click', closeAddClient);
 }
+

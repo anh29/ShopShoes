@@ -2,25 +2,24 @@ import react from 'react';
 import Axios from 'axios';
 import ReactDOM from 'react-dom/client';
 import PrintProduct from './printProduct';
-import Cal from './cal';
-let totalQuantity = 0, total = 0, totalDiscount= 0, total_extra_pay = 0,  totalPrice = 0;
-let listProduct = [{id : 0}];
-//let discount = document.querySelector('#cal .discount');
+window.addEventListener('beforeunload', function() {
+    localStorage.clear();    
+    const Obj = {check : false}; 
+    localStorage.setItem("checkDiscount", JSON.stringify(Obj));
+    localStorage.setItem("myProducts", JSON.stringify([]));
+    localStorage.setItem("myCustomer", JSON.stringify({}));
+});
 
-
-const selectProduct = () => {     
+let selectProduct = () => {         
     const [product, setProduct] = react.useState([]);
     const [suggestion, setSuggestion] = react.useState([]);
-    const [text, setText] = react.useState('');    
-
-    // let extra_pay = document.querySelector('.extra-pay'); 
-    // discount.addEventListener("change", disFunc);
-
-    // function disFunc() {
-    //     // total = ;
-    //     // createCal(totalQuantity, totalPrice, total);
-    //     console.log(total - parseFloat(discount.value));
-    // }   
+    const [text, setText] = react.useState('');
+    const $ = document.querySelector.bind(document);
+    let totalQuantity = $('#cal .total-quantity');
+    let totalPrice = $('#cal .total-price');
+    let discount = $('#cal .discount');
+    let extra_pay = $('#cal .extra-pay');
+    let total = $('#cal .total-pay');       
     react.useEffect(()=>{
         const loadProduct = async() => {
             const repsonse = await Axios.get("http://localhost:4000/product");
@@ -29,57 +28,80 @@ const selectProduct = () => {
         loadProduct();
     }, []);
 
-    function createCal(totalQuantity, totalDiscount, total_extra_pay, totalPrice, total) {
-        let cal = ReactDOM.createRoot(document.getElementById('cal')); 
-        cal.render(
-        <react.StrictMode>
-            <Cal totalQuantity= {totalQuantity}totalPrice={totalPrice} totalDiscount={totalDiscount} total_extra_pay={total_extra_pay}  total={total}/>
-        </react.StrictMode>
-        );
-    }
+    function disFunc() {
+        if(discount.value >= 0) {            
+            if(totalPrice.value > 0) total.value = parseFloat(totalPrice.value) - parseFloat(discount.value);
+        }
+        else discount.value = 0;
+    }       
+    discount.addEventListener("change", disFunc);
 
-    function createProduct(MaHang, TenHang, GiaHang, Link) { 
-        let isExit = listProduct.some(function(product) {
+    function extraFunc() {
+        if(extra_pay.value >= 0) {
+            if( totalPrice.value > 0) total.value = parseFloat(total.value) + parseFloat(extra_pay.value);
+        } 
+        else extra_pay.value = 0;
+    }       
+    extra_pay.addEventListener("change", extraFunc);
+
+    function createProduct(MaHang, TenHang, GiaHang, Link, SoLuong) { 
+        let listProduct = JSON.parse(localStorage.getItem("myProducts"));
+        let list = [];
+        let isExit;
+        if(listProduct !== null) {
+            listProduct.forEach((product) => {
+                list.push(product);
+            }) 
+        }
+        if (list === '') isExit = false;
+        else isExit = list.some(function(product) {
             return product.id === MaHang;
         });
-
         if(isExit === true) {
-            let string = "#G" + MaHang +  " .Quantity";
-            const quantity = document.querySelector(string);
+            const quantity = $("#G" + MaHang +  " .Quantity");
             quantity.value = parseFloat(quantity.value) + 1;
+            listProduct.forEach((obj) => {
+                if(obj.id === MaHang) {
+                    obj.quantity++;
+                } 
+            });    
+            localStorage.setItem("myProducts", JSON.stringify(list));    
         }
         else{
-            let printProduct = ReactDOM.createRoot(document.getElementById("G" + MaHang));        
+            let printProduct = ReactDOM.createRoot(document.getElementById("G" + MaHang));  
             printProduct.render(
-            <react.StrictMode>        
-                <PrintProduct Name={TenHang} Price={GiaHang} Quantity={1} Link={Link}/>     
-            </react.StrictMode>
+                <react.StrictMode>        
+                    <PrintProduct Name={TenHang} Price={GiaHang} Quantity={1} Link={Link} id={("G" + MaHang)}/>     
+                </react.StrictMode>
             );     
-            let newObject = {id: MaHang, quantity: 1};
-            listProduct.push(newObject);
-        }   
+            let newObject = {id: MaHang, name: TenHang, quantity: 1, price: GiaHang, max_quantity: SoLuong};
+            //chua biet add truc tiep vao localstorage
+            list.push(newObject);
+            localStorage.setItem("myProducts", JSON.stringify(list));
+        }           
+        let productCard = $("#G" + MaHang);
+        productCard.classList.remove("closeProduct");     
     }    
-    
-    const selectProduct = (product) => {
+    const choseProduct = (product) => {
         let selectQuantity = 1; 
         setSuggestion([]); 
-        setText('');
-
-        totalQuantity += selectQuantity;
-        totalPrice += product.GiaHang * selectQuantity;
-        total = totalPrice;
-        
-        createProduct(product.MaHang, product.TenHang, product.GiaHang, product.Anh);
-        createCal(totalQuantity, totalDiscount, total_extra_pay, totalPrice, total);
+        setText('');        
+        createProduct(product.Id, product.Title, product.Price, product.Image, product.Quantity);
+        totalQuantity.value = parseInt(totalQuantity.value) + parseInt(selectQuantity);
+        totalPrice.value = parseInt(totalPrice.value) + product.Price * parseFloat(selectQuantity);
+        const Dis = JSON.parse(localStorage.getItem("checkDiscount"));
+        if(Dis.check === true) {
+            discount.value = parseFloat(totalPrice.value) * 0.2;
+        }
+        total.value =  parseInt(totalPrice.value) + parseFloat(extra_pay.value) - parseFloat(discount.value);
     }
 
     const onChangeHandler = (text) => {
         let result = [];
         if(text.length > 0) {
             result = product.filter((keyword) => {
-                return keyword.TenHang.toLowerCase().includes(text.toLowerCase());
+                return keyword.Title.toLowerCase().includes(text.toLowerCase());
             });
-            console.log(result);
         }
         setSuggestion(result);
         setText(text);
@@ -92,7 +114,7 @@ const selectProduct = () => {
             <i className="icon-Find1 fa-solid fa-magnifying-glass" />
             <div className="result-box">       
                 {suggestion.map((product) =>
-                    <li key={product.MaHang} className='extra-product' onClick = {() => selectProduct(product)}>{product.TenHang}</li>
+                    <li key={product.Id} className='extra-product' onClick = {() => choseProduct(product)}>{product.Title}</li>
                 )}
             </div>
         </div>

@@ -2,7 +2,7 @@ const {cnn, sql} = require('../../connect');
 module.exports = function() {
     this.getAll = async function(result) {
         let pool = await cnn;
-        let sqlString = "Select * from TaiKhoanHeThong inner join NguoiDung on ID = ID_user";
+        let sqlString = "select * from AspNetUsers as users inner join AspNetUserRoles as userRoles on users.Id = userRoles.UserId where userRoles.RoleId = 3";
         return await pool.request().query(sqlString, function(err, data) {
             if(data.recordset.length > 0)  {
                 result(null, data.recordset);
@@ -13,38 +13,20 @@ module.exports = function() {
         });
     };
 
-    this.getOne = async function(id, result) {
-        let pool = await cnn;
-        let sqlString = "Select * from tb_HangHoa where TenHang like '%' + @varId + '%'";
-        return await pool.request()
-        .input('varId', sql.NVarChar, id)
-        .query(sqlString, function(err, data) {
-            if(data.recordset.length > 0)  {
-                result(null, data.recordset[0]);
-            }
-            else {
-                result(true, null);
-            }
-        });
-    };
-
-    this.create = async function(newData, result) {
-        let pool = await cnn;
-        let sqlString = "Insert into tb_HangHoa(MSSV, Name, Gender, DTB, ID_Lop) values(@mssv, @name, @gender, @dtb, @id_lop)";
-        return await pool.request()
-        .input('mssv', sql.Int, newData.MSSV)
-        .input('name', sql.NVarChar, newData.Name)
-        .input('gender', sql.Bit, newData.Gender)
-        .input('dtb', sql.Int, newData.DTB)
-        .input('id_lop', sql.Int, newData.ID_Lop)
-        .query(sqlString, function(err, data) {
-            if(err) {
-                result(true, null);
-            }else {
-                result(null, newData);
-            }
-        });
-    };
+    // this.getOne = async function(id, result) {
+    //     let pool = await cnn;
+    //     let sqlString = "Select * from tb_HangHoa where TenHang like '%' + @varId + '%'";
+    //     return await pool.request()
+    //     .input('varId', sql.NVarChar, id)
+    //     .query(sqlString, function(err, data) {
+    //         if(data.recordset.length > 0)  {
+    //             result(null, data.recordset[0]);
+    //         }
+    //         else {
+    //             result(true, null);
+    //         }
+    //     });
+    // };
 
     // this.udpate = async function(newData, result) {
     //     let pool = await cnn;

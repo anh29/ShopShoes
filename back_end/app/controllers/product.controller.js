@@ -10,11 +10,11 @@ exports.getList = function(req, res) {
     }); 
 };
 
-exports.getById = function(req, res) {
-    model.getOne(req.params.id, function(err, data) {
-        res.send({result: data, error: err});
-    })
-};
+// exports.getById = function(req, res) {
+//     model.getOne(req.params.id, function(err, data) {
+//         res.send({result: data, error: err});
+//     })
+// };
 
 // exports.addNew = function(req, res) {
 //     model.create(req.body, function(err, data) {
@@ -22,11 +22,11 @@ exports.getById = function(req, res) {
 //     });
 // };
 
-// exports.update = async function(req, res) {
-//     model.update(req.body, function(err, data) {
-//         res.send({result: data, error: err});
-//     });
-// };
+exports.update = async function(req, res) {
+    model.update(req.body, function(err, data) {
+        res.send({result: data, error: err});
+    });
+};
 // exports.delete =  async function(req, res) {
 //     model.delete(req.params.id, function(err, data) {
 //         res.send({result: data, error: err});

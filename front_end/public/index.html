@@ -46,52 +46,51 @@
             <div class="container">
                 <div id="box">
                 <div>
-                    <div id="client"></div>
+                    <div id="client">
+                        <div class="find-client">
+                      </div>
+                    </div>
                     <select class="Loai">
                         <option value="TrucTiep">Trực tiếp</option>
                         <option value="DatHang">Đặt hàng</option>
                     </select>
                 </div>              
-                <div class="find-customer">
-                    <!-- <input type="text" class="input" style="padding-left: 40px;" placeholder="Tìm khách hàng">
-                    <span href=""><i class="icon-Find2 fa-solid fa-magnifying-glass"></i></span> -->
-                        <div id="customer"></div>
-                        <button href="" class="js-icon-plus"><i class="icon-plus fa-solid fa-plus"></i></button>
+                <div class="find-customer" style="width: 320px;">
+                    <div id="customer">
+                        <input type="text" name="ID_KhachHang" class="input-box-customer" style="padding-left: 40px; width: 275px;" placeholder="Tìm khách hàng" value=""/>
+                    </div>
+                    <button href="" class="js-icon-plus"><i class="icon-plus fa-solid fa-plus"></i></button>
                 </div>
                 <div id="cal">
                     <div style="margin-top: 40px;">
-                        <label for="title">Tổng số lượng hàng</label>
-                        <input type="number" id="title" readonly value="0">
+                        <label for="TongSoLuong">Tổng số lượng hàng</label>
+                        <input type="number" id="TongSoLuong" class="total-quantity" readonly value="0">
                     </div>
                     <div>
-                        <label for="">Tổng tiền hàng</label>
-                        <input type="number" id="title" readonly value="0">
+                        <label for="ThanhTien">Tổng tiền hàng</label>
+                        <input type="number" id="ThanhTien" class="total-price" readonly value="0">
                     </div>
                     <div>
-                        <label for="" class="TieuDe">Giảm giá</label>
-                        <input type="number" class="discount" value="0">
+                        <label for="ChiecKhau" class="TieuDe">Giảm giá</label>
+                        <input type="number" id="ChiecKhau" class="discount" value="0">
                     </div>
                     <div>
-                        <label for="" class="TieuDe">Thu khác</label>
-                        <input type="number" class="extra-pay" value="0">
+                        <label for="ThuThem" class="TieuDe">Thu khác</label>
+                        <input type="number" id="ThuThem" class="extra-pay" value="0">
                     </div>
                     <div>
-                        <label for="" class="TieuDe">Khách cần trả</label>
-                        <input type="number" id="title" readonly value="0">
+                        <label for="TongCong" class="TieuDe">Khách cần trả</label>
+                        <input type="number" id="TongCong" class="total-pay" readonly value="0">
                     </div>
                 </div>
-                <div>
+                <div id="pay">
                     <button class="pay">THANH TOÁN</button>
                 </div>
                 </div>     
-                <div class="listProduct">
-                    <div id="G1"></div>
-                    <div id="G2"></div>
-                    <div id="G3"></div>
-                </div>     
-                <div class="Note">
-                <input type="text" name="" id="" style="padding-left: 45px;" placeholder=" Ghi chú">
-                <i class="pen fa-solid fa-pen"></i>
+                <div id="listProduct"></div>     
+                <div class="noteBox">
+                    <input type="text" name="" id="note" style="padding-left: 45px;" placeholder=" Ghi chú">
+                    <i class="pen fa-solid fa-pen"></i>
                 </div>
             </div>
             <div class="footer">
@@ -112,33 +111,42 @@
                     <i style="font-size: 26px; margin-right: 16px;" class="fa-solid fa-user"></i>
                     Thêm khách hàng
                 </header>
-
                 <div class="modal-body">
                     <div class="Infor-left">
                         <label for="Name" class="modal-label">Tên khách hàng</label>
-                        <input type="text" id="Name" class="modal-input">
+                        <input type="text" id="Name" class="modal-input" autocomplete="off">
 
                         <label for="birth" class="modal-label">Ngày sinh</label>
-                        <input type="text" id="birth" class="modal-input">
+                        <input type="date" id="birth" class="modal-input" autocomplete="off">
 
                         <label for="gender" class="modal-label">Giới tính</label>
-                        <input type="text" id="gender" class="modal-input">
+                        <form class="select">
+                            <input name="gender" type="radio" value="Name" style="margin-left: 20px;" checked=true/>Nam
+                            <input name="gender" type="radio" value="Nữ" style="margin-left: 30px;"/>Nữ
+                            <input name="gender" type="radio" value="Khác" style="margin-left: 30px;"/>Khác
+                        </form>
                     </div>
                     <div class="Infor-right">
-                        <label for="number" class="modal-label">Số điện thoại</label>
-                        <input type="text" id="number" class="modal-input">
+                        <label for="number_phone" class="modal-label">Số điện thoại</label>
+                        <input type="text" id="number_phone" class="modal-input" autocomplete="off">
 
                         <label for="address" class="modal-label">Địa chỉ</label>
-                        <input type="text" id="address" class="modal-input">
+                        <input type="text" id="address" class="modal-input" autocomplete="off">
+
+                        
+                        <label for="Email" class="modal-label">Email</label>
+                        <input type="email" id="Email" class="modal-input" autocomplete="off">
                     </div>
-                </div>
-                            
+                </div>                            
                 <div class="trans">
-                    <button id="OK"><i class="fa-solid fa-check"></i> OK</button>
-                    <button id="Cancel" class="js-close-modal"><i class="fa-solid fa-xmark"></i> CANCEL</button>
+                    <div id="addCustomer"></div>
                 </div>
             </div>
         </div>
+        <div class="container_bill close" id="printed_bill">
+        </div>
+
+        <div id="warning"></div>
         <script src="./assets/js/openAndCloseModal.js"></script>
     </body>
     </html>

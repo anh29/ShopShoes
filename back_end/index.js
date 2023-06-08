@@ -13,17 +13,23 @@
 
 let express = require('express');
 let cors = require('cors');
-let app = express();
-app.use(cors());
+let morgan = require('morgan');
 let bodyParser = require("body-parser");
+let app = express();
+app.use(morgan('dev'));
+app.use(cors());
 app.use(bodyParser.json());
 
 var productRoute = require('./app/routes/product.route');
 var customerRoute = require('./app/routes/customer.route');
 var clientRoute = require('./app/routes/client.route');
+var billRoute = require('./app/routes/bill.route');
+var detailBillRoute = require('./app/routes/detailBill.route');
 productRoute(app);
 customerRoute(app);
 clientRoute(app);
+billRoute(app);
+detailBillRoute(app);
 
 app.listen(4000, function() {
     console.log("http://localhost:4000")
