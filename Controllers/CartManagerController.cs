@@ -156,7 +156,7 @@ public class CartManagerController : Controller
                 }
                 TongTien = ThanhTien;
 
-                string contentCustomer = System.IO.File.ReadAllText(Server.MapPath("/Content/templates/send2.html"));
+                string contentCustomer = System.IO.File.ReadAllText(Server.MapPath("/Content/templates/sendOrder.html"));
                 contentCustomer = contentCustomer.Replace("{{MaDon}}", order.Code);
                 contentCustomer = contentCustomer.Replace("{{SanPham}}", strSanPham);
                 contentCustomer = contentCustomer.Replace("{{NgayDat}}", order.CreatedDate.ToString());

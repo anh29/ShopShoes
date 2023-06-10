@@ -1,0 +1,84 @@
+﻿@model ShopOnline.Models.ApplicationUser
+@using (Ajax.BeginForm("Profile", "Account", new AjaxOptions
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "load_data",
+    OnComplete = "OnSuccessCO",
+    OnFailure = "OnFailure"
+
+}, new { @Id = "myForm" }))
+{
+    <script>
+        function OnSuccessCO() {
+            location.href = "/Account/Profile";
+        }
+        function OnFailure() {
+
+        }
+    </script>
+    @Html.AntiForgeryToken()
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_styles.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_responsive.css">
+
+    <div class="container product_section_container">
+        <div class="row">
+            <div class="col product_section clearfix">
+
+                <!-- Breadcrumbs -->
+
+                <div class="breadcrumbs d-flex flex-row align-items-center">
+                    <ul>
+                        <li><a href="/home">Home</a></li>
+                        <li class="active"><a href="/"><i class="fa fa-angle-right" aria-hidden="true"></i>Giỏ hàng</a></li>
+                    </ul>
+                </div>
+
+                <!-- Main Content -->
+
+                <div class="row">
+                    <div class="col-md-12" id="load_data">
+                        <h3>Thông tin khách hàng</h3>
+                        <div class="form-group">
+                            <label>Tên tài khoản</label>
+                            <input type="text" name="UserName" required value="@Model.UserName" class="form-control" autocomplete="off" />
+                        </div>
+                        <div class="form-group">
+                            <label>Họ tên khách hàng</label>
+                            <input type="text" name="Name" required value="@Model.FullName" class="form-control" autocomplete="off" />
+                        </div>
+                        <div class="form-group">
+                            <label>Số điện thoại</label>
+                            <input type="text" name="Phone" value="@Model.PhoneNumber" class="form-control" autocomplete="off" />
+                        </div>
+                        <div class="form-group">
+                            <label>Địa chỉ</label>
+                            <input type="text" name="Address" value="@Model.Address" class="form-control" autocomplete="off" />
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="text" name="Email" value="@Model.Email" class="form-control" autocomplete="off" />
+                        </div>
+                        <div class="form-group">
+                            <label>Điểm tích lũy (Khi mua tại cửa hàng)</label>
+                            <input type="text" name="point" value="@Model.accumulatedPoints" class="form-control" autocomplete="off" />
+                        </div>
+                        <div class="form-group">
+                            <label>Mật khẩu</label>
+                            @*<input type="text" name="password" value="@Model.Password" class="form-control" autocomplete="off" />*@
+                            Đặt lại mật khẩu?
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-block btn-success">Lưu thay đổi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts {
+    <script src="~/Content/assets/js/categories_custom.js"></script>
+}
+
+

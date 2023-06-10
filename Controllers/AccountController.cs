@@ -96,6 +96,7 @@ namespace ShopOnline.Controllers
             }
         }
 
+
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
@@ -138,6 +139,21 @@ namespace ShopOnline.Controllers
                     return View(model);
             }
         }
+        public ActionResult Profile()
+        {
+            var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = userManager.FindById(User.Identity.GetUserId());
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public ActionResult EditProfile(ApplicationUser model)
+        {
+            // Code để chỉnh sửa thông tin profile
+
+            return RedirectToAction("Profile");
+        }
 
         //
         // GET: /Account/Register
@@ -174,9 +190,9 @@ namespace ShopOnline.Controllers
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -217,22 +233,27 @@ namespace ShopOnline.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                var users = UserManager.Users.ToList();
+                var user = users.FirstOrDefault(u => u.Email == model.Email);
+                if (user == null)
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                // Generate a password reset token for the user
+                var token = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = token }, protocol: "https");
+
+                // Send an email to the user with the password reset link
+                string contentUser = System.IO.File.ReadAllText(Server.MapPath("/Content/templates/resetPassword.html"));
+                contentUser = contentUser.Replace("{{TenKhachHang}}", user.FullName);
+                contentUser = contentUser.Replace("{{ResetLink}}", callbackUrl);
+                ShopOnline.Common.Common.SendMail("Shop TwinkleToes", "Quên mật khẩu - Shop TwinkleToes", contentUser.ToString(), user.Email);
+
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
-            // If we got this far, something failed, redisplay form
+            // Nếu không thành công, hiển thị lại form
             return View(model);
         }
 
@@ -263,7 +284,8 @@ namespace ShopOnline.Controllers
             {
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
+            var users = UserManager.Users.ToList();
+            var user = users.FirstOrDefault(u => u.Email == model.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
@@ -272,6 +294,7 @@ namespace ShopOnline.Controllers
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
             if (result.Succeeded)
             {
+                _dataAccessLayer.SaveChanges();
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
             AddErrors(result);
@@ -285,7 +308,6 @@ namespace ShopOnline.Controllers
         {
             return View();
         }
-
         //
         // POST: /Account/ExternalLogin
         [HttpPost]
@@ -418,7 +440,7 @@ namespace ShopOnline.Controllers
         {
             return View();
         }
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)
