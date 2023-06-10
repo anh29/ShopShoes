@@ -1,0 +1,48 @@
+﻿@model ShopOnline.Models.EF.Post
+@{
+    ViewBag.Title = "Chi tiết bài viết";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/main_styles.css">
+<style>
+    .post_section_container {
+        margin-top: 180px;
+    }
+
+    .row-item-new {
+        margin-bottom: 20px;
+    }
+
+    .title-post {
+        font-size: 24px;
+        border-bottom: 1px solid;
+        padding: 15px 0;
+        margin-bottom: 25px;
+    }
+
+    .desc-post {
+        font-size: 20px;
+        padding: 15px 0;
+    }
+</style>
+<div class="container post_section_container">
+    @if (Model != null)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="title-post">@Model.Title</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <img src="@Model.Image" alt="@Model.Image" style="width: 90%;" />
+            </div>
+            <div class="col-md-10">
+                <h2 class="desc-post">@Model.Description</h2>
+                <div class="col-md-12">
+                    @Html.Raw(Model.Detail)
+                </div>
+            </div>
+        </div>
+    }
+</div>

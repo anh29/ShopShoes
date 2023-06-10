@@ -1,0 +1,30 @@
+﻿@*xác định rằng kiểu mô hình (model) của trang web là một danh sách các đối tượng ProductCategory.*@
+@model IEnumerable<ShopOnline.Models.EF.ProductCategory>
+
+@if (Model != null && Model.Any())
+{
+    var i = 0;
+    <!-- Banner -->
+
+    <div class="banner">
+        <div class="container">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    i++;
+                    if (i <= 3)
+                    {
+                    <div class="col-md-4">
+                        <div class="banner_item align-items-center" style="background-image: url('@item.Icon');background-size: contain;">
+                            <div class="banner_category">
+                                <a href="/danh-muc-san-pham/@item.Alias-p@(item.Id)">@item.Title</a>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+}
